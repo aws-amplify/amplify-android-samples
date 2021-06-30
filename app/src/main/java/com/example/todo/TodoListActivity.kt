@@ -1,8 +1,8 @@
 package com.example.todo
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todo.listfragments.OptionsBarFragment
 
 class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItemClickListener {
     private val itemAdapter: TodoItemAdapter = TodoItemAdapter(this)

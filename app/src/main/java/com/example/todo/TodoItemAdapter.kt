@@ -16,6 +16,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             .build()
     }
 
+    // TODO: Query and save in datastore
     override fun updateModel(model: Todo, string: String): Todo {
         return model.copyOfBuilder()
             .name(string)
