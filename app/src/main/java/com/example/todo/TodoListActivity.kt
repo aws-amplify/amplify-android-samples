@@ -21,7 +21,7 @@ class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItem
         optionsBar.arguments = b
         optionsBar.show(supportFragmentManager, "TAG")
     }
-
+    //Hello
     override fun onRadioClick(position: Int) {
         itemAdapter.deleteModel(position)
     }
