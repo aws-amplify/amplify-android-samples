@@ -15,7 +15,7 @@ class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItem
 
     override fun fabAction() {
         val b = Bundle()
-        var optionsBar = OptionsBarFragment()
+        val optionsBar = OptionsBarFragment()
         b.putSerializable("ItemAdapter", itemAdapter)
         b.putBoolean("IsNewItem", true)
         optionsBar.arguments = b
@@ -26,11 +26,10 @@ class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItem
         itemAdapter.deleteModel(position)
     }
 
-    // In progress of passing in data to optionsBarFragment
-    override fun onTextClick(position: Int) {
 
+    override fun onTextClick(position: Int) {
         val b = Bundle()
-        var optionsBar = OptionsBarFragment()
+        val optionsBar = OptionsBarFragment()
         b.putSerializable("ItemAdapter", itemAdapter)
         b.putBoolean("IsNewItem", false)
         b.putInt("Position", position)

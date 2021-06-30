@@ -55,6 +55,10 @@ abstract class ItemAdapter<T: Model> : RecyclerView.Adapter<RecyclerView.ViewHol
 
     fun setItem(position: Int, model: T) {
         items[position] = model
+        Amplify.DataStore.save(model,
+            { Log.i("Tutorial", "Updated item: ${model.id}") },
+            { Log.e("Tutorial", "Could not update item in DataStore", it) }
+        )
     }
 
     fun getItem(position: Int) : T {
