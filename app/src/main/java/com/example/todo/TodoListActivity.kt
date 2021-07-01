@@ -1,7 +1,6 @@
 package com.example.todo
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItemClickListener {
@@ -14,26 +13,17 @@ class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItem
     }
 
     override fun fabAction() {
-        val b = Bundle()
-        val optionsBar = OptionsBarFragment()
-        b.putSerializable("ItemAdapter", itemAdapter)
-        b.putBoolean("IsNewItem", true)
-        optionsBar.arguments = b
-        optionsBar.show(supportFragmentManager, "TAG")
+        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter,true, -1)
+        optionsInstance.show(supportFragmentManager, "TAG")
     }
 
     override fun onRadioClick(position: Int) {
         itemAdapter.deleteModel(position)
     }
 
-
     override fun onTextClick(position: Int) {
-        val b = Bundle()
-        val optionsBar = OptionsBarFragment()
-        b.putSerializable("ItemAdapter", itemAdapter)
-        b.putBoolean("IsNewItem", false)
-        b.putInt("Position", position)
-        optionsBar.arguments = b
-        optionsBar.show(supportFragmentManager, "TAG")
+        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter,false, position)
+        optionsInstance.show(supportFragmentManager, "TAG")
     }
+
 }

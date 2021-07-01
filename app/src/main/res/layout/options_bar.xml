@@ -6,56 +6,95 @@
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="32dp">
+    android:paddingBottom="@dimen/dimen_16"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <EditText
         android:id="@+id/todo_text_entry"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dimen_0"
         android:layout_height="wrap_content"
-        android:hint="e.g., Meet with Manager"
+        android:hint="@string/example_text"
         android:inputType="textPersonName"
-        android:layout_margin="16dp"
-        android:padding="16dp"
+        android:layout_margin="@dimen/dimen_16"
+        android:padding="@dimen/dimen_16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="@string/example_text" />
 
     <ImageButton
         android:id="@+id/priority_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/dimen_48"
+        android:layout_height="@dimen/dimen_48"
         android:background="@android:color/transparent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/dimen_16"
+        android:layout_marginStart="@dimen/dimen_16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/todo_text_entry"
-        app:srcCompat="@drawable/ic_baseline_outlined_flag_24" />
+        app:srcCompat="@drawable/ic_baseline_outlined_flag_24"
+        android:contentDescription="@string/priority" />
 
 
     <ImageButton
         android:id="@+id/trash_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/dimen_48"
+        android:layout_height="@dimen/dimen_48"
         android:background="@android:color/transparent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_16"
         app:layout_constraintStart_toEndOf="@id/priority_button"
         app:layout_constraintTop_toBottomOf="@id/todo_text_entry"
-        app:srcCompat="@drawable/ic_baseline_delete_24" />
+        app:srcCompat="@drawable/ic_baseline_delete_24"
+        android:contentDescription="@string/delete" />
 
     <ImageButton
         android:id="@+id/save_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="@dimen/dimen_48"
+        android:layout_height="@dimen/dimen_48"
+        android:layout_marginStart="@dimen/dimen_8"
+        android:layout_marginTop="@dimen/dimen_16"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.91"
         app:layout_constraintStart_toEndOf="@id/trash_button"
         app:layout_constraintTop_toBottomOf="@id/todo_text_entry"
-        app:srcCompat="@drawable/ic_baseline_arrow_circle_up_24" />
+        app:srcCompat="@drawable/ic_baseline_arrow_circle_up_24"
+        android:contentDescription="@string/save" />
 
+    <RadioGroup
+        android:id="@+id/radioGroup_priority"
+        android:layout_width="@dimen/dimen_0"
+        android:layout_height="@dimen/dimen_51"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_8"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trash_button">
+
+        <RadioButton
+            android:id="@+id/radioButton_low"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blue"
+            android:text="@string/low"/>
+
+        <RadioButton
+            android:id="@+id/radioButton_med"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/yellow"
+            android:text="@string/medium" />
+
+        <RadioButton
+            android:id="@+id/radioButton_high"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/red"
+            android:text="@string/high" />
+    </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

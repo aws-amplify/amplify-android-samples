@@ -10,12 +10,23 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class OptionsBarFragment : BottomSheetDialogFragment() {
+    companion object {
+        fun newInstance(itemAdapter: TodoItemAdapter, isNewItem: Boolean, position: Int): OptionsBarFragment {
+            val b = Bundle()
+            val optionsBar = OptionsBarFragment()
+            b.putBoolean("IsNewItem", isNewItem)
+            b.putInt("Position", position)
+            b.putSerializable("ItemAdapter", itemAdapter)
+            optionsBar.arguments = b
+            return optionsBar
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val b : Bundle? = arguments
         val itemAdapter : TodoItemAdapter = b?.getSerializable("ItemAdapter") as TodoItemAdapter
         val position : Int = b.getInt("Position", -1)
@@ -34,7 +45,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
 
         else {
             saveBtn.setOnClickListener {
-                var item = itemAdapter.getItem(position)
+                val item = itemAdapter.getItem(position)
                 val todoEntry = view.findViewById<EditText>(R.id.todo_text_entry).text.toString()
                 itemAdapter.setItem(position, itemAdapter.updateModel(item, todoEntry))
                 itemAdapter.notifyItemChanged(position)

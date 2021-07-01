@@ -8,7 +8,7 @@ import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.AWSDataStorePlugin
 
 
-class MainActivity : Application() {
+class TodoApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
