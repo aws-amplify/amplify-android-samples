@@ -1,4 +1,4 @@
-package com.example.core
+package com.amplifyframework.samples.core
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.Model
 import kotlin.reflect.KClass
 
-abstract class ItemAdapter<T: Model> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class ItemAdapter<T : Model> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items = mutableListOf<T>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -30,14 +30,12 @@ abstract class ItemAdapter<T: Model> : RecyclerView.Adapter<RecyclerView.ViewHol
     override fun getItemCount() = items.size
     abstract fun getViewHolder(view: View): RecyclerView.ViewHolder
     abstract fun getLayout(): Int
-    abstract fun createModel(string: String): T
-    abstract fun updateModel(model: T, string: String): T
     abstract fun getModelClass(): KClass<out T>
-
 
     fun addModel(model: T) {
         items.add(model)
-        Amplify.DataStore.save(model,
+        Amplify.DataStore.save(
+            model,
             { Log.i("Tutorial", "Saved item: ${model.id}") },
             { Log.e("Tutorial", "Could not save item to DataStore", it) }
         )
@@ -45,7 +43,8 @@ abstract class ItemAdapter<T: Model> : RecyclerView.Adapter<RecyclerView.ViewHol
 
     fun deleteModel(position: Int) {
         val item = items[position]
-        Amplify.DataStore.delete(item,
+        Amplify.DataStore.delete(
+            item,
             { Log.i("Tutorial", "deleted item") },
             { Log.e("Tutorial", "Could not delete item") }
         )
@@ -55,18 +54,14 @@ abstract class ItemAdapter<T: Model> : RecyclerView.Adapter<RecyclerView.ViewHol
 
     fun setItem(position: Int, model: T) {
         items[position] = model
-        Amplify.DataStore.save(model,
+        Amplify.DataStore.save(
+            model,
             { Log.i("Tutorial", "Updated item: ${model.id}") },
             { Log.e("Tutorial", "Could not update item in DataStore", it) }
         )
     }
 
-    fun getItem(position: Int) : T {
+    fun getItem(position: Int): T {
         return items[position]
     }
-
-
-
-
-
 }

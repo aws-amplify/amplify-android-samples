@@ -1,9 +1,10 @@
-package com.example.todo
+package com.amplifyframework.samples.gettingstarted
 
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
+import com.amplifyframework.samples.core.ListActivity
 
-class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItemClickListener {
+class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
     private val itemAdapter: TodoItemAdapter = TodoItemAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +14,7 @@ class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItem
     }
 
     override fun fabAction() {
-        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter,true, -1)
+        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter, true, -1)
         optionsInstance.show(supportFragmentManager, "TAG")
     }
 
@@ -22,8 +23,7 @@ class TodoListActivity : com.example.core.ListActivity(), TodoItemAdapter.OnItem
     }
 
     override fun onTextClick(position: Int) {
-        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter,false, position)
+        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter, false, position)
         optionsInstance.show(supportFragmentManager, "TAG")
     }
-
 }

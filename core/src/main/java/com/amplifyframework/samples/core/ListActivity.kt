@@ -1,21 +1,17 @@
-package com.example.core
+package com.amplifyframework.samples.core
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-
-import com.amplifyframework.datastore.DataStoreException
 
 
-abstract class ListActivity : AppCompatActivity(){
+abstract class ListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fab : View = findViewById(R.id.floatingActionButton)
+        val fab: View = findViewById(R.id.floatingActionButton)
         fab.setOnClickListener {
             fabAction()
         }

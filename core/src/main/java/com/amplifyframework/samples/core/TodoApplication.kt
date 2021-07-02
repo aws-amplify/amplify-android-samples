@@ -1,12 +1,10 @@
-package com.example.core
+package com.amplifyframework.samples.core
 
 import android.app.Application
 import android.util.Log
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.AWSDataStorePlugin
-
 
 class TodoApplication : Application() {
     override fun onCreate() {
