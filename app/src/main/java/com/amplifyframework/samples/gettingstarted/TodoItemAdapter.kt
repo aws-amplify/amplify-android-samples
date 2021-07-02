@@ -15,10 +15,10 @@ import kotlin.reflect.KClass
 
 class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
 
-    fun createModel(string: String, priority: Priority): Todo {
+    fun createModel(name: String, priority: Priority): Todo {
         Log.i("Tutorial", "$priority")
         return Todo.builder()
-            .name(string)
+            .name(name)
             .priority(priority)
             .build()
     }
