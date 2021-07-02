@@ -14,9 +14,8 @@ query SyncTodos(
     items {
       id
       name
-      date
       priority
-      status
+      completed
       _version
       _deleted
       _lastChangedAt
@@ -31,9 +30,8 @@ query GetTodo($id: ID!) {
   getTodo(id: $id) {
     id
     name
-    date
     priority
-    status
+    completed
     _version
     _deleted
     _lastChangedAt
@@ -50,9 +48,8 @@ query ListTodos(
     items {
       id
       name
-      date
       priority
-      status
+      completed
       _version
       _deleted
       _lastChangedAt

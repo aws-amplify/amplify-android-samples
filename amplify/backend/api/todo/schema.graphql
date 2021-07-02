@@ -1,8 +1,8 @@
 type Todo @model {
   id: ID!
   name: String!
-  priority: Priority
-  description: String
+  priority: Priority!
+  completed: AWSDateTime
 }
 
 enum Priority {

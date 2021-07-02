@@ -3,9 +3,8 @@ subscription OnCreateTodo {
   onCreateTodo {
     id
     name
-    date
     priority
-    status
+    completed
     _version
     _deleted
     _lastChangedAt
@@ -17,9 +16,8 @@ subscription OnUpdateTodo {
   onUpdateTodo {
     id
     name
-    date
     priority
-    status
+    completed
     _version
     _deleted
     _lastChangedAt
@@ -31,9 +29,8 @@ subscription OnDeleteTodo {
   onDeleteTodo {
     id
     name
-    date
     priority
-    status
+    completed
     _version
     _deleted
     _lastChangedAt

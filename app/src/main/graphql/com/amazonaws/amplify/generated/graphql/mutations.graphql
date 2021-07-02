@@ -6,9 +6,8 @@ mutation CreateTodo(
   createTodo(input: $input, condition: $condition) {
     id
     name
-    date
     priority
-    status
+    completed
     _version
     _deleted
     _lastChangedAt
@@ -23,9 +22,8 @@ mutation UpdateTodo(
   updateTodo(input: $input, condition: $condition) {
     id
     name
-    date
     priority
-    status
+    completed
     _version
     _deleted
     _lastChangedAt
@@ -40,9 +38,8 @@ mutation DeleteTodo(
   deleteTodo(input: $input, condition: $condition) {
     id
     name
-    date
     priority
-    status
+    completed
     _version
     _deleted
     _lastChangedAt
