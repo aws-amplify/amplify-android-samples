@@ -6,7 +6,7 @@ import com.amplifyframework.AmplifyException
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.AWSDataStorePlugin
 
-class TodoApplication : Application() {
+open class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 

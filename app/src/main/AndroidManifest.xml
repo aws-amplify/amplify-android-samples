@@ -3,7 +3,7 @@
     package="com.amplifyframework.samples.gettingstarted">
 
     <application
-        android:name="com.amplifyframework.samples.core.TodoApplication"
+        android:name="com.amplifyframework.samples.gettingstarted.TodoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

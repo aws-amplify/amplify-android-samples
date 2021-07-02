@@ -44,8 +44,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
-    implementation 'com.amplifyframework:aws-api:1.18.0'
-    implementation 'com.amplifyframework:aws-datastore:1.18.0'
+    implementation 'com.amplifyframework:aws-api:1.20.1'
+    implementation 'com.amplifyframework:aws-datastore:1.20.1'
     implementation project(path: ':core')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
