@@ -23,10 +23,10 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             .build()
     }
 
-    fun updateModel(model: Todo, string: String, priority: Priority): Todo {
+    fun updateModel(model: Todo, name: String, priority: Priority): Todo {
         Log.i("Tutorial", "$priority")
         return model.copyOfBuilder()
-            .name(string)
+            .name(name)
             .priority(priority)
             .build()
     }
