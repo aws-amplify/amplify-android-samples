@@ -12,12 +12,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class OptionsBarFragment : BottomSheetDialogFragment() {
     companion object {
+        const val IS_NEW_ITEM = "IsNewItem"
+        const val POSITION = "Position"
+        const val ITEM_ADAPTER = "ItemAdapter"
         fun newInstance(itemAdapter: TodoItemAdapter, isNewItem: Boolean, position: Int): OptionsBarFragment {
             val b = Bundle()
             val optionsBar = OptionsBarFragment()
-            b.putBoolean("IsNewItem", isNewItem)
-            b.putInt("Position", position)
-            b.putSerializable("ItemAdapter", itemAdapter)
+            b.putBoolean(IS_NEW_ITEM, isNewItem)
+            b.putInt(POSITION, position)
+            b.putSerializable(ITEM_ADAPTER, itemAdapter)
             optionsBar.arguments = b
             return optionsBar
         }
@@ -29,9 +32,9 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         val b: Bundle? = arguments
-        val itemAdapter: TodoItemAdapter = b?.getSerializable("ItemAdapter") as TodoItemAdapter
-        val position: Int = b.getInt("Position", -1)
-        val isNewItem: Boolean = b.getBoolean("IsNewItem")
+        val itemAdapter: TodoItemAdapter = b?.getSerializable(ITEM_ADAPTER) as TodoItemAdapter
+        val position: Int = b.getInt(POSITION, -1)
+        val isNewItem: Boolean = b.getBoolean(IS_NEW_ITEM)
         val view: View = inflater.inflate(R.layout.options_bar, container, false)
         val saveBtn: View = view.findViewById(R.id.save_button)
         val priorityBtn: View = view.findViewById(R.id.priority_button)
