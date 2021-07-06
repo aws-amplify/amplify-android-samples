@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Todo</string>
+    <string name="todo_text_hint" />
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="example_text">e.g., Meet with Manager</string>
+    <string name="priority">Priority</string>
+    <string name="save">save</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
+    <string name="sample_text">Sample Text</string>
+    <string name="delete">delete</string>
+</resources>
