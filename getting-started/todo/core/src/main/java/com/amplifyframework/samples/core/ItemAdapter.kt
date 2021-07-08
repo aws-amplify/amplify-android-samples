@@ -42,13 +42,10 @@ abstract class ItemAdapter<T : Model> : RecyclerView.Adapter<RecyclerView.ViewHo
                     val item = results.next()
                     items.add(item)
                     Log.i("Tutorial", "Item loaded: ${item.id}")
-
                 }
             },
             { Log.e("Tutorial", "Query Failed: $it") }
-
         )
-
     }
 
     fun addModel(model: T) {
