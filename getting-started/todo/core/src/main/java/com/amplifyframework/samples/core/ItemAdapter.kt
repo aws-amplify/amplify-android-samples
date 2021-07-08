@@ -1,5 +1,6 @@
 package com.amplifyframework.samples.core
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ abstract class ItemAdapter<T : Model> : RecyclerView.Adapter<RecyclerView.ViewHo
         (holder as Binder<T>).bind(item)
     }
 
+
     interface Binder<T> {
         fun bind(data: T)
     }
@@ -30,7 +32,24 @@ abstract class ItemAdapter<T : Model> : RecyclerView.Adapter<RecyclerView.ViewHo
     override fun getItemCount() = items.size
     abstract fun getViewHolder(view: View): RecyclerView.ViewHolder
     abstract fun getLayout(): Int
-    abstract fun getModelClass(): KClass<out T>
+    abstract fun getModelClass(): Class<out T>
+
+    fun query() {
+        Amplify.DataStore.query(
+            getModelClass(),
+            { results ->
+                while (results.hasNext()) {
+                    val item = results.next()
+                    items.add(item)
+                    Log.i("Tutorial", "Item loaded: ${item.id}")
+
+                }
+            },
+            { Log.e("Tutorial", "Query Failed: $it") }
+
+        )
+
+    }
 
     fun addModel(model: T) {
         items.add(model)

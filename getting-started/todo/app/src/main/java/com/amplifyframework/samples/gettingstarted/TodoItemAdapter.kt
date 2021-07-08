@@ -31,8 +31,8 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             .build()
     }
 
-    override fun getModelClass(): KClass<out Todo> {
-        return Todo::class
+    override fun getModelClass(): Class<out Todo> {
+        return Todo::class.java
     }
 
     override fun getLayout() = R.layout.todo_item
@@ -45,10 +45,14 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         RecyclerView.ViewHolder(view), Binder<Todo>, View.OnClickListener {
         private val textView: TextView = view.findViewById(R.id.todo_row_item)
         private val radioBtn: RadioButton = view.findViewById(R.id.todo_radio_button)
+        private lateinit var text: String
+        private lateinit var priority: Priority
 
         override fun bind(data: Todo) {
             textView.text = data.name
             radioBtn.setCircleColor(priorityColor(data.priority))
+            text = data.name
+            priority = data.priority
         }
 
         init {
@@ -60,7 +64,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             val position: Int = adapterPosition
             when (v?.id) {
                 R.id.todo_radio_button -> { listener.onRadioClick(position) }
-                R.id.todo_row_item -> { listener.onTextClick(position) }
+                R.id.todo_row_item -> { listener.onTextClick(position, text, priority) }
             }
         }
     }
@@ -90,6 +94,6 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
 
     interface OnItemClickListener {
         fun onRadioClick(position: Int)
-        fun onTextClick(position: Int)
+        fun onTextClick(position: Int, text: String, priority: Priority)
     }
 }

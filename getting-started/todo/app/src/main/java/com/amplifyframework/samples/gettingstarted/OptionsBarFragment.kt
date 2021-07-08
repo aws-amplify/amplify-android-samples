@@ -1,6 +1,7 @@
 package com.amplifyframework.samples.gettingstarted
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +16,16 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         const val IS_NEW_ITEM = "IsNewItem"
         const val POSITION = "Position"
         const val ITEM_ADAPTER = "ItemAdapter"
-        fun newInstance(itemAdapter: TodoItemAdapter, isNewItem: Boolean, position: Int): OptionsBarFragment {
+        const val ITEM_TEXT = "ItemText"
+        const val PRIORITY = "Priority"
+        fun newInstance(itemAdapter: TodoItemAdapter, isNewItem: Boolean, position: Int, text: String, priority: Priority): OptionsBarFragment {
             val b = Bundle()
             val optionsBar = OptionsBarFragment()
             b.putBoolean(IS_NEW_ITEM, isNewItem)
             b.putInt(POSITION, position)
             b.putSerializable(ITEM_ADAPTER, itemAdapter)
+            b.putString(ITEM_TEXT, text)
+            b.putSerializable(PRIORITY, priority)
             optionsBar.arguments = b
             return optionsBar
         }
@@ -33,18 +38,26 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
     ): View {
         val b: Bundle? = arguments
         val itemAdapter: TodoItemAdapter = b?.getSerializable(ITEM_ADAPTER) as TodoItemAdapter
-        val position: Int = b.getInt(POSITION, -1)
+        val position: Int = b.getInt(POSITION)
         val isNewItem: Boolean = b.getBoolean(IS_NEW_ITEM)
+        var priority: Priority = b.getSerializable(PRIORITY) as Priority
+        val text: String? = b.getString(ITEM_TEXT)
         val view: View = inflater.inflate(R.layout.options_bar, container, false)
         val saveBtn: View = view.findViewById(R.id.save_button)
         val priorityBtn: View = view.findViewById(R.id.priority_button)
         val priorityRadioGroup: RadioGroup = view.findViewById(R.id.radioGroup_priority)
-        var priority: Priority
+
+        when (priority) {
+            Priority.LOW -> priorityRadioGroup.check(R.id.radioButton_low)
+            Priority.NORMAL -> priorityRadioGroup.check(R.id.radioButton_med)
+            Priority.HIGH -> priorityRadioGroup.check(R.id.radioButton_high)
+        }
+        view.findViewById<EditText>(R.id.todo_text_entry).setText(text)
 
         if (isNewItem) {
             saveBtn.setOnClickListener {
                 val todoEntry = view.findViewById<EditText>(R.id.todo_text_entry).text.toString()
-                priority = getPriority(view, priorityRadioGroup)
+                priority = getPriority(view, priorityRadioGroup, priority)
                 val item = itemAdapter.createModel(todoEntry, priority)
                 itemAdapter.addModel(item)
                 itemAdapter.notifyDataSetChanged()
@@ -53,7 +66,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
             saveBtn.setOnClickListener {
                 val item = itemAdapter.getItem(position)
                 val todoEntry = view.findViewById<EditText>(R.id.todo_text_entry).text.toString()
-                priority = getPriority(view, priorityRadioGroup)
+                priority = getPriority(view, priorityRadioGroup, priority)
                 itemAdapter.setItem(position, itemAdapter.updateModel(item, todoEntry, priority))
                 itemAdapter.notifyItemChanged(position)
             }
@@ -68,7 +81,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         return view
     }
 
-    private fun getPriority(view: View, priorityRadioGroup: RadioGroup): Priority {
+    private fun getPriority(view: View, priorityRadioGroup: RadioGroup, priority: Priority): Priority {
         val selectedOption = priorityRadioGroup.checkedRadioButtonId
         val selectedRadioBtn: RadioButton = view.findViewById(selectedOption)
         return when (selectedRadioBtn.id) {
@@ -76,7 +89,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
             R.id.radioButton_med -> Priority.NORMAL
             R.id.radioButton_high -> Priority.HIGH
             else -> {
-                Priority.LOW
+                priority
             }
         }
     }
