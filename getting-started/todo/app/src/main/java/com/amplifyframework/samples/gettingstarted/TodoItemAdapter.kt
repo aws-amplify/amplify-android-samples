@@ -4,30 +4,34 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
 import android.view.View
-import android.widget.RadioButton
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.temporal.Temporal
 import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.samples.core.ItemAdapter
 import java.io.Serializable
-import kotlin.reflect.KClass
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
+    private var completedItems = mutableListOf<Todo>()
 
     fun createModel(name: String, priority: Priority): Todo {
-        Log.i("Tutorial", "$priority")
         return Todo.builder()
             .name(name)
             .priority(priority)
+            .completed(null)
             .build()
     }
 
-    fun updateModel(model: Todo, name: String, priority: Priority): Todo {
-        Log.i("Tutorial", "$priority")
+    fun updateModel(model: Todo, name: String, priority: Priority, completedAt: Temporal.DateTime?): Todo {
         return model.copyOfBuilder()
             .name(name)
             .priority(priority)
+            .completed(completedAt)
             .build()
     }
 
@@ -41,29 +45,69 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         return ItemViewHolder(view)
     }
 
+    override fun query() {
+        Amplify.DataStore.query(
+            getModelClass(),
+            { results ->
+                while (results.hasNext()) {
+                    val item = results.next()
+                    if (item.completed == null) {
+                        addItem(item)
+                    } else {
+                        completedItems.add(item)
+                    }
+                    Log.i("Tutorial", "Item loaded: ${item.id}")
+                }
+                activity.runOnUiThread{
+                    notifyDataSetChanged()
+                }
+
+            },
+            { Log.e("Tutorial", "Query Failed: $it") }
+        )
+    }
+
+    fun markComplete(todo: Todo) {
+        val date = Date()
+        val offsetMillis = TimeZone.getDefault().getOffset(date.time).toLong()
+        val offsetSeconds = TimeUnit.MILLISECONDS.toSeconds(offsetMillis).toInt()
+        val temporalDateTime = Temporal.DateTime(date, offsetSeconds)
+        val updatedTodo = updateModel(todo, todo.name, todo.priority, temporalDateTime)
+        completedItems.add(updatedTodo)
+        save(updatedTodo)
+    }
+
+    fun markIncomplete(todo: Todo) {
+        completedItems.remove(todo)
+        val updatedTodo = updateModel(todo, todo.name, todo.priority, null)
+        save(updatedTodo)
+    }
+
     inner class ItemViewHolder(view: View) :
         RecyclerView.ViewHolder(view), Binder<Todo>, View.OnClickListener {
         private val textView: TextView = view.findViewById(R.id.todo_row_item)
-        private val radioBtn: RadioButton = view.findViewById(R.id.todo_radio_button)
+        private val checkBox: CheckBox = view.findViewById(R.id.todo_checkbox)
         private lateinit var text: String
         private lateinit var priority: Priority
 
         override fun bind(data: Todo) {
             textView.text = data.name
-            radioBtn.setCircleColor(priorityColor(data.priority))
+            checkBox.setCheckBoxColor(priorityColor(data.priority))
+            checkBox.isChecked = data.completed != null
             text = data.name
             priority = data.priority
+
         }
 
         init {
-            radioBtn.setOnClickListener(this)
+            checkBox.setOnClickListener(this)
             textView.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
             val position: Int = adapterPosition
             when (v?.id) {
-                R.id.todo_radio_button -> { listener.onRadioClick(position) }
+                R.id.todo_checkbox -> { listener.onCheckClick(position, checkBox) }
                 R.id.todo_row_item -> { listener.onTextClick(position, text, priority) }
             }
         }
@@ -77,7 +121,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         }
     }
 
-    private fun RadioButton.setCircleColor(color: Int) {
+    private fun CheckBox.setCheckBoxColor(color: Int) {
         val colorStateList = ColorStateList(
             arrayOf(
                 intArrayOf(-android.R.attr.state_checked), // unchecked
@@ -93,7 +137,20 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     }
 
     interface OnItemClickListener {
-        fun onRadioClick(position: Int)
+        fun onCheckClick(position: Int, checkBox: CheckBox)
         fun onTextClick(position: Int, text: String, priority: Priority)
     }
+
+    fun showCompletedTasks() {
+        appendList(completedItems)
+        notifyDataSetChanged()
+    }
+
+    fun hideCompletedTasks() {
+        clearList()
+        completedItems.clear()
+        query()
+
+    }
+
 }

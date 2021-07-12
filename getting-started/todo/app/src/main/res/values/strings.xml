@@ -11,4 +11,6 @@
     <string name="high">High</string>
     <string name="sample_text">Sample Text</string>
     <string name="delete">delete</string>
+    <string name="show_tasks">Show Completed Tasks</string>
+    <string name="hide_tasks">Hide Completed Tasks</string>
 </resources>
