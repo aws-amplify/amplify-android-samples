@@ -1,20 +1,17 @@
 package com.amplifyframework.samples.gettingstarted
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.CheckBox
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.datastore.generated.model.Priority
+import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.samples.core.ItemAdapter
 import com.amplifyframework.samples.core.ListActivity
-import com.amplifyframework.core.model.temporal.Temporal
-import com.amplifyframework.datastore.generated.model.Todo
 
 class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
     private val itemAdapter: TodoItemAdapter = TodoItemAdapter(this)
@@ -82,8 +79,6 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
             itemAdapter.markComplete(todo)
         else
             itemAdapter.markIncomplete(todo)
-
-
     }
 
     override fun onTextClick(position: Int, text: String, priority: Priority) {

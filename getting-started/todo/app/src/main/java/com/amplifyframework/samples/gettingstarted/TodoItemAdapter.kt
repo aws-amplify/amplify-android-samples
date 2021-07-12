@@ -13,7 +13,8 @@ import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.samples.core.ItemAdapter
 import java.io.Serializable
-import java.util.*
+import java.util.Date
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
@@ -58,10 +59,9 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                     }
                     Log.i("Tutorial", "Item loaded: ${item.id}")
                 }
-                activity.runOnUiThread{
+                activity.runOnUiThread {
                     notifyDataSetChanged()
                 }
-
             },
             { Log.e("Tutorial", "Query Failed: $it") }
         )
@@ -96,7 +96,6 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             checkBox.isChecked = data.completed != null
             text = data.name
             priority = data.priority
-
         }
 
         init {
@@ -150,7 +149,5 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         clearList()
         completedItems.clear()
         query()
-
     }
-
 }

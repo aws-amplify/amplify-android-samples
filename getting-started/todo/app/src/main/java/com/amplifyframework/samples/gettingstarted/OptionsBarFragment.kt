@@ -55,8 +55,6 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         val priorityRadioGroup: RadioGroup = view.findViewById(R.id.radioGroup_priority)
         val textBox: EditText = view.findViewById(R.id.todo_text_entry)
 
-
-
         when (priority) {
             Priority.LOW -> priorityRadioGroup.check(R.id.radioButton_low)
             Priority.NORMAL -> priorityRadioGroup.check(R.id.radioButton_med)
@@ -64,19 +62,24 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         }
         view.findViewById<EditText>(R.id.todo_text_entry).setText(text)
 
-        textBox.addTextChangedListener(object: TextWatcher
-        {
-            override fun onTextChanged(s:CharSequence, start:Int, before:Int, count:Int) {
-                saveBtn.isEnabled = s.toString().trim { it <= ' ' }.isNotEmpty()
+        textBox.addTextChangedListener(
+            object : TextWatcher {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    saveBtn.isEnabled = s.toString().trim { it <= ' ' }.isNotEmpty()
+                }
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+// TODO Auto-generated method stub
+                }
+                override fun afterTextChanged(s: Editable) {
+// TODO Auto-generated method stub
+                }
             }
-            override fun beforeTextChanged(s:CharSequence, start:Int, count:Int,
-                                           after:Int) {
-                // TODO Auto-generated method stub
-            }
-            override fun afterTextChanged(s: Editable) {
-                // TODO Auto-generated method stub
-            }
-        })
+        )
 
         if (isNewItem) {
             saveBtn.isEnabled = false
@@ -85,7 +88,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
                 priority = getPriority(view, priorityRadioGroup, priority)
                 val item = itemAdapter.createModel(todoEntry, priority)
                 itemAdapter.addModel(item)
-                itemAdapter.notifyItemInserted(itemAdapter.itemCount-1)
+                itemAdapter.notifyItemInserted(itemAdapter.itemCount - 1)
                 textBox.text.clear()
             }
         } else {

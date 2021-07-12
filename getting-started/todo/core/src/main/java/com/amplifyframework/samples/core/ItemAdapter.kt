@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.Model
-import kotlin.reflect.KClass
 
 abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items = mutableListOf<T>()
@@ -33,7 +32,6 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         (holder as Binder<T>).bind(item)
     }
 
-
     interface Binder<T> {
         fun bind(data: T)
     }
@@ -52,10 +50,9 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
                     items.add(item)
                     Log.i("Tutorial", "Item loaded: ${item.id}")
                 }
-                activity.runOnUiThread{
+                activity.runOnUiThread {
                     notifyDataSetChanged()
                 }
-
             },
             { Log.e("Tutorial", "Query Failed: $it") }
         )
@@ -72,7 +69,6 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
     fun addModel(model: T) {
         items.add(model)
         save(model)
-
     }
 
     fun deleteModel(position: Int) {
