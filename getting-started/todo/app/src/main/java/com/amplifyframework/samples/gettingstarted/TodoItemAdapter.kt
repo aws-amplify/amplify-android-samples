@@ -15,7 +15,8 @@ import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.samples.core.ItemAdapter
 import java.io.Serializable
-import java.util.*
+import java.util.Date
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
@@ -103,7 +104,9 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     private fun sort(q: QuerySortBy, showStatus: Boolean) {
         clearList()
         completedItems.clear()
-        Amplify.DataStore.query(getModelClass(), Where.sorted(q),
+        Amplify.DataStore.query(
+            getModelClass(),
+            Where.sorted(q),
             { results ->
                 while (results.hasNext()) {
                     val item = results.next()
@@ -207,7 +210,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         notifyDataSetChanged()
     }
 
-    override fun deleteModel(position: Int): Todo{
+    override fun deleteModel(position: Int): Todo {
         val todo = super.deleteModel(position)
         if (completedItems.contains(todo))
             completedItems.remove(todo)
