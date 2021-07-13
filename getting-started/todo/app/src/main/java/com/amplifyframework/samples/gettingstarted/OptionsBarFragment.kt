@@ -3,6 +3,7 @@ package com.amplifyframework.samples.gettingstarted
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,12 +47,13 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         val b: Bundle? = arguments
         val itemAdapter: TodoItemAdapter = b?.getSerializable(ITEM_ADAPTER) as TodoItemAdapter
         val position: Int = b.getInt(POSITION)
-        val isNewItem: Boolean = b.getBoolean(IS_NEW_ITEM)
+        var isNewItem: Boolean = b.getBoolean(IS_NEW_ITEM)
         var priority: Priority = b.getSerializable(PRIORITY) as Priority
         val text: String? = b.getString(ITEM_TEXT)
         val view: View = inflater.inflate(R.layout.options_bar, container, false)
         val saveBtn: View = view.findViewById(R.id.save_button)
         val priorityBtn: View = view.findViewById(R.id.priority_button)
+        val trashBtn: View = view.findViewById(R.id.trash_button)
         val priorityRadioGroup: RadioGroup = view.findViewById(R.id.radioGroup_priority)
         val textBox: EditText = view.findViewById(R.id.todo_text_entry)
 
@@ -80,20 +82,16 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
                 }
             }
         )
-
-        if (isNewItem) {
-            saveBtn.isEnabled = false
-            saveBtn.setOnClickListener {
+        saveBtn.isEnabled = !isNewItem
+        saveBtn.setOnClickListener {
+            if (isNewItem) {
                 val todoEntry = textBox.text.toString()
                 priority = getPriority(view, priorityRadioGroup, priority)
                 val item = itemAdapter.createModel(todoEntry, priority)
                 itemAdapter.addModel(item)
                 itemAdapter.notifyItemInserted(itemAdapter.itemCount - 1)
                 textBox.text.clear()
-            }
-        } else {
-            saveBtn.isEnabled = true
-            saveBtn.setOnClickListener {
+            } else {
                 val item = itemAdapter.getItem(position)
                 val todoEntry = textBox.text.toString()
                 priority = getPriority(view, priorityRadioGroup, priority)
@@ -108,6 +106,14 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
                 priorityRadioGroup.visibility = View.VISIBLE
             else
                 priorityRadioGroup.visibility = View.GONE
+        }
+
+        trashBtn.setOnClickListener {
+            itemAdapter.deleteModel(position)
+            textBox.text.clear()
+            isNewItem = true
+            priority = Priority.LOW
+            priorityRadioGroup.check(R.id.radioButton_low)
         }
         return view
     }

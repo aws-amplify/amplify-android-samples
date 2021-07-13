@@ -72,15 +72,14 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         save(model)
     }
 
-    fun deleteModel(position: Int) {
-        val item = items[position]
+    open fun deleteModel(position: Int): T {
+        val item = removeItemFromList(position)
         Amplify.DataStore.delete(
             item,
             { Log.i("Tutorial", "deleted item") },
             { Log.e("Tutorial", "Could not delete item") }
         )
-        items.remove(item)
-        notifyItemRemoved(position)
+        return item
     }
 
     fun setModel(position: Int, model: T) {

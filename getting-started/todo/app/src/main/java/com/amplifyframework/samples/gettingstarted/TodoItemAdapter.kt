@@ -206,4 +206,11 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         setList(getList().filter { !completedItems.contains(it) }.toMutableList())
         notifyDataSetChanged()
     }
+
+    override fun deleteModel(position: Int): Todo{
+        val todo = super.deleteModel(position)
+        if (completedItems.contains(todo))
+            completedItems.remove(todo)
+        return todo
+    }
 }
