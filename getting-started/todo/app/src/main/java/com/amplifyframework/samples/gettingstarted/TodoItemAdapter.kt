@@ -8,13 +8,14 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.QuerySortBy
+import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.core.model.temporal.Temporal
 import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.samples.core.ItemAdapter
 import java.io.Serializable
-import java.util.Date
-import java.util.TimeZone
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
@@ -46,7 +47,9 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         return ItemViewHolder(view)
     }
 
-    override fun query() {
+    fun query(showStatus: Boolean) {
+        clearList()
+        completedItems.clear()
         Amplify.DataStore.query(
             getModelClass(),
             { results ->
@@ -59,6 +62,60 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                     }
                     Log.i("Tutorial", "Item loaded: ${item.id}")
                 }
+                if (!showStatus)
+                    appendList(completedItems)
+                activity.runOnUiThread {
+                    notifyDataSetChanged()
+                }
+            },
+            { Log.e("Tutorial", "Query Failed: $it") }
+        )
+    }
+
+    fun sortDateCreated(showStatus: Boolean) {
+        query(showStatus)
+    }
+
+    fun sortPriorityAsc(showStatus: Boolean) {
+        val newList = getList().filter { !completedItems.contains(it) }
+        setList(newList.sortedBy { it.priority }.asReversed().toMutableList())
+        if (!showStatus)
+            appendList(completedItems.sortedBy { it.priority }.asReversed().toMutableList())
+        notifyDataSetChanged()
+    }
+
+    fun sortPriorityDes(showStatus: Boolean) {
+        val newList = getList().filter { !completedItems.contains(it) }
+        setList(newList.sortedBy { it.priority }.toMutableList())
+        if (!showStatus)
+            appendList(completedItems.sortedBy { it.priority }.toMutableList())
+        notifyDataSetChanged()
+    }
+
+    fun sortNameAsc(showStatus: Boolean) {
+        sort(Todo.NAME.ascending(), showStatus)
+    }
+
+    fun sortNameDes(showStatus: Boolean) {
+        sort(Todo.NAME.descending(), showStatus)
+    }
+
+    private fun sort(q: QuerySortBy, showStatus: Boolean) {
+        clearList()
+        completedItems.clear()
+        Amplify.DataStore.query(getModelClass(), Where.sorted(q),
+            { results ->
+                while (results.hasNext()) {
+                    val item = results.next()
+                    if (item.completed == null) {
+                        addItem(item)
+                    } else {
+                        completedItems.add(item)
+                    }
+                    Log.i("Tutorial", "Item loaded: ${item.id}")
+                }
+                if (!showStatus)
+                    appendList(completedItems)
                 activity.runOnUiThread {
                     notifyDataSetChanged()
                 }
@@ -146,8 +203,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     }
 
     fun hideCompletedTasks() {
-        clearList()
-        completedItems.clear()
-        query()
+        setList(getList().filter { !completedItems.contains(it) }.toMutableList())
+        notifyDataSetChanged()
     }
 }

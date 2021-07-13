@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.Model
+import java.util.Comparator
 
 abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items = mutableListOf<T>()
@@ -110,7 +111,11 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         items.clear()
     }
 
-    fun printList() {
-        Log.i("Tutorial", items.toString())
+    fun getList(): MutableList<T> {
+        return items
+    }
+
+    fun setList(list: MutableList<T>) {
+        items = list
     }
 }

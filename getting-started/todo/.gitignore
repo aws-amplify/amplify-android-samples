@@ -40,3 +40,4 @@ amplifytools.xcconfig
 
 /.gradle/
 /.idea/
+../.idea/

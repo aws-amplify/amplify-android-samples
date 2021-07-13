@@ -42,21 +42,41 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
 
     override fun onStart() {
         super.onStart()
-        itemAdapter.query()
+        itemAdapter.query(showStatus)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.show_hide -> {
                 if (item.title == getString(R.string.show_tasks)) {
+                    showStatus = false
                     itemAdapter.showCompletedTasks()
                     item.title = getString(R.string.hide_tasks)
-                    showStatus = false
                 } else {
+                    showStatus = true
                     itemAdapter.hideCompletedTasks()
                     item.title = getString(R.string.show_tasks)
-                    showStatus = true
                 }
+                true
+            }
+            R.id.created -> {
+                itemAdapter.sortDateCreated(showStatus)
+                true
+            }
+            R.id.priority_asc -> {
+                itemAdapter.sortPriorityAsc(showStatus)
+                true
+            }
+            R.id.priority_des -> {
+                itemAdapter.sortPriorityDes(showStatus)
+                true
+            }
+            R.id.name_asc -> {
+                itemAdapter.sortNameAsc(showStatus)
+                true
+            }
+            R.id.name_des -> {
+                itemAdapter.sortNameDes(showStatus)
                 true
             }
             else -> super.onOptionsItemSelected(item)
