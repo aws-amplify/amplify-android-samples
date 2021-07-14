@@ -88,8 +88,7 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
         optionsInstance.show(supportFragmentManager, "TAG")
     }
 
-    override fun onCheckClick(position: Int, checkBox: CheckBox) {
-        val isChecked = checkBox.isChecked
+    override fun onCheckClick(position: Int, isChecked: Boolean) {
         val todo: Todo = if (showStatus)
             itemAdapter.removeItemFromList(position)
         else

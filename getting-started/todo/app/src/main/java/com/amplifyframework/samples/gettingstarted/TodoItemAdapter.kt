@@ -166,7 +166,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         override fun onClick(v: View?) {
             val position: Int = adapterPosition
             when (v?.id) {
-                R.id.todo_checkbox -> { listener.onCheckClick(position, checkBox) }
+                R.id.todo_checkbox -> { listener.onCheckClick(position, checkBox.isChecked) }
                 R.id.todo_row_item -> { listener.onTextClick(position, text, priority) }
             }
         }
@@ -196,7 +196,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     }
 
     interface OnItemClickListener {
-        fun onCheckClick(position: Int, checkBox: CheckBox)
+        fun onCheckClick(position: Int, isChecked: Boolean)
         fun onTextClick(position: Int, text: String, priority: Priority)
     }
 
