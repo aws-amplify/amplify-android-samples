@@ -66,9 +66,9 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         )
     }
 
-    fun addModel(model: T) {
+    fun addModel(model: T, save: Boolean) {
         items.add(model)
-        save(model)
+        if (save) save(model)
     }
 
     open fun deleteModel(position: Int): T {
@@ -95,10 +95,6 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         items.remove(item)
         notifyItemRemoved(position)
         return item
-    }
-
-    fun addItem(model: T) {
-        items.add(model)
     }
 
     fun appendList(list: List<T>) {

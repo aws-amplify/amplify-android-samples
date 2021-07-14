@@ -57,7 +57,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                 while (results.hasNext()) {
                     val item = results.next()
                     if (item.completedAt == null) {
-                        addItem(item)
+                        addModel(item, false)
                     } else {
                         completedItems.add(item)
                     }
@@ -111,7 +111,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                 while (results.hasNext()) {
                     val item = results.next()
                     if (item.completedAt == null) {
-                        addItem(item)
+                        addModel(item, false)
                     } else {
                         completedItems.add(item)
                     }

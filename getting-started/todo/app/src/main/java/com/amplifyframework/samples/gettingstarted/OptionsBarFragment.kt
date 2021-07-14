@@ -87,7 +87,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
                 val todoEntry = textBox.text.toString()
                 priority = getPriority(view, priorityRadioGroup, priority)
                 val item = itemAdapter.createModel(todoEntry, priority)
-                itemAdapter.addModel(item)
+                itemAdapter.addModel(item, true)
                 itemAdapter.notifyItemInserted(itemAdapter.itemCount - 1)
                 textBox.text.clear()
             } else {
