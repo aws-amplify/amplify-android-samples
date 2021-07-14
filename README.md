@@ -25,5 +25,5 @@ type Todo @model {
   completedAt: AWSDateTime
 }
 ```
-Create the backend:
+Create the backend:<br />
 `amplify push`
