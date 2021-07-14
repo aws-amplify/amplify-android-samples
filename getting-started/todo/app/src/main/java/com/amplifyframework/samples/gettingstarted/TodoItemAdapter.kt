@@ -26,7 +26,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         return Todo.builder()
             .name(name)
             .priority(priority)
-            .completed(null)
+            .completedAt(null)
             .build()
     }
 
@@ -34,7 +34,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         return model.copyOfBuilder()
             .name(name)
             .priority(priority)
-            .completed(completedAt)
+            .completedAt(completedAt)
             .build()
     }
 
@@ -56,7 +56,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             { results ->
                 while (results.hasNext()) {
                     val item = results.next()
-                    if (item.completed == null) {
+                    if (item.completedAt == null) {
                         addItem(item)
                     } else {
                         completedItems.add(item)
@@ -110,7 +110,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             { results ->
                 while (results.hasNext()) {
                     val item = results.next()
-                    if (item.completed == null) {
+                    if (item.completedAt == null) {
                         addItem(item)
                     } else {
                         completedItems.add(item)
@@ -153,7 +153,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         override fun bind(data: Todo) {
             textView.text = data.name
             checkBox.setCheckBoxColor(priorityColor(data.priority))
-            checkBox.isChecked = data.completed != null
+            checkBox.isChecked = data.completedAt != null
             text = data.name
             priority = data.priority
         }
