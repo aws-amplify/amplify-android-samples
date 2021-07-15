@@ -112,11 +112,16 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
 
         // Deletes the model when trash button is clicked
         trashBtn.setOnClickListener {
-            itemAdapter.deleteModel(position)
-            textBox.text.clear()
-            isNewItem = true
-            priority = Priority.LOW
-            priorityRadioGroup.check(R.id.radioButton_low)
+            if (isNewItem) {
+                dismiss()
+            } else {
+                itemAdapter.deleteModel(position)
+                textBox.text.clear()
+                isNewItem = true
+                priority = Priority.LOW
+                priorityRadioGroup.check(R.id.radioButton_low)
+                dismiss()
+            }
         }
         return view
     }

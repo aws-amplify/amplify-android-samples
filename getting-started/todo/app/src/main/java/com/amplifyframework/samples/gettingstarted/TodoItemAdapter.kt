@@ -233,5 +233,4 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         fun onCheckClick(position: Int, isChecked: Boolean)
         fun onTextClick(position: Int, text: String, priority: Priority)
     }
-
 }
