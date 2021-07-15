@@ -20,8 +20,9 @@ import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
-    private var completedItems = mutableListOf<Todo>()
+    private var completedItems = mutableListOf<Todo>() // A list to hold completed items
 
+    // Creates and returns a model
     fun createModel(name: String, priority: Priority): Todo {
         return Todo.builder()
             .name(name)
@@ -30,6 +31,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
             .build()
     }
 
+    // Updates and returns an existing model
     fun updateModel(model: Todo, name: String, priority: Priority, completedAt: Temporal.DateTime?): Todo {
         return model.copyOfBuilder()
             .name(name)
@@ -48,6 +50,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         return ItemViewHolder(view)
     }
 
+    // A custom query method specifically for TodoItemAdapter class
     fun query(showStatus: Boolean) {
         clearList()
         completedItems.clear()
@@ -73,10 +76,12 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         )
     }
 
+    // Sorts list by date created
     fun sortDateCreated(showStatus: Boolean) {
         query(showStatus)
     }
 
+    // Sorts list by priority ascending
     fun sortPriorityAsc(showStatus: Boolean) {
         val newList = getList().filter { !completedItems.contains(it) }
         setList(newList.sortedBy { it.priority }.asReversed().toMutableList())
@@ -85,6 +90,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         notifyDataSetChanged()
     }
 
+    // Sorts list by priority descending
     fun sortPriorityDes(showStatus: Boolean) {
         val newList = getList().filter { !completedItems.contains(it) }
         setList(newList.sortedBy { it.priority }.toMutableList())
@@ -93,14 +99,17 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         notifyDataSetChanged()
     }
 
+    // Sorts by name ascending
     fun sortNameAsc(showStatus: Boolean) {
         sort(Todo.NAME.ascending(), showStatus)
     }
 
+    // Sorts by name descending
     fun sortNameDes(showStatus: Boolean) {
         sort(Todo.NAME.descending(), showStatus)
     }
 
+    // Sort method that takes in a QuerySortBy and sorts using DataStore.query()
     private fun sort(q: QuerySortBy, showStatus: Boolean) {
         clearList()
         completedItems.clear()
@@ -127,6 +136,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         )
     }
 
+    // Marks an item as complete by setting completedAt to current DateTime
     fun markComplete(todo: Todo) {
         val date = Date()
         val offsetMillis = TimeZone.getDefault().getOffset(date.time).toLong()
@@ -137,12 +147,59 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         save(updatedTodo)
     }
 
+    // Marks an item as incomplete by setting completedAt to null
     fun markIncomplete(todo: Todo) {
         completedItems.remove(todo)
         val updatedTodo = updateModel(todo, todo.name, todo.priority, null)
         save(updatedTodo)
     }
 
+    // Defines the colors corresponding to each Priority
+    private fun priorityColor(priority: Priority): Int {
+        return when (priority) {
+            Priority.LOW -> Color.argb(200, 51, 181, 129) // Turquoise
+            Priority.NORMAL -> Color.argb(200, 155, 179, 0) // Yellow
+            Priority.HIGH -> Color.argb(200, 201, 21, 23) // Red
+        }
+    }
+
+    // Sets the color of the checkBox
+    private fun CheckBox.setCheckBoxColor(color: Int) {
+        val colorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_checked), // unchecked
+                intArrayOf(android.R.attr.state_checked) // checked
+            ),
+            intArrayOf(
+                color, // unchecked color
+                color // checked color
+            )
+        )
+        // set the radio button's button tint list
+        buttonTintList = colorStateList
+    }
+
+    // Shows completed tasks in recyclerView
+    fun showCompletedTasks() {
+        appendList(completedItems)
+        notifyDataSetChanged()
+    }
+
+    // Hides completed tasks in recyclerView
+    fun hideCompletedTasks() {
+        setList(getList().filter { !completedItems.contains(it) }.toMutableList())
+        notifyDataSetChanged()
+    }
+
+    // Deletes model from ItemAdapter list and completedItems list
+    override fun deleteModel(position: Int): Todo {
+        val todo = super.deleteModel(position)
+        if (completedItems.contains(todo))
+            completedItems.remove(todo)
+        return todo
+    }
+
+    // ViewHolder class
     inner class ItemViewHolder(view: View) :
         RecyclerView.ViewHolder(view), Binder<Todo>, View.OnClickListener {
         private val textView: TextView = view.findViewById(R.id.todo_row_item)
@@ -172,48 +229,9 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         }
     }
 
-    private fun priorityColor(priority: Priority): Int {
-        return when (priority) {
-            Priority.LOW -> Color.argb(200, 51, 181, 129)
-            Priority.NORMAL -> Color.argb(200, 155, 179, 0)
-            Priority.HIGH -> Color.argb(200, 201, 21, 23)
-        }
-    }
-
-    private fun CheckBox.setCheckBoxColor(color: Int) {
-        val colorStateList = ColorStateList(
-            arrayOf(
-                intArrayOf(-android.R.attr.state_checked), // unchecked
-                intArrayOf(android.R.attr.state_checked) // checked
-            ),
-            intArrayOf(
-                color, // unchecked color
-                color // checked color
-            )
-        )
-        // set the radio button's button tint list
-        buttonTintList = colorStateList
-    }
-
     interface OnItemClickListener {
         fun onCheckClick(position: Int, isChecked: Boolean)
         fun onTextClick(position: Int, text: String, priority: Priority)
     }
 
-    fun showCompletedTasks() {
-        appendList(completedItems)
-        notifyDataSetChanged()
-    }
-
-    fun hideCompletedTasks() {
-        setList(getList().filter { !completedItems.contains(it) }.toMutableList())
-        notifyDataSetChanged()
-    }
-
-    override fun deleteModel(position: Int): Todo {
-        val todo = super.deleteModel(position)
-        if (completedItems.contains(todo))
-            completedItems.remove(todo)
-        return todo
-    }
 }

@@ -10,7 +10,7 @@ import com.amplifyframework.datastore.AWSDataStorePlugin
 open class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
+        // Add the necessary plugins to initialize Amplify
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.addPlugin(AWSApiPlugin())

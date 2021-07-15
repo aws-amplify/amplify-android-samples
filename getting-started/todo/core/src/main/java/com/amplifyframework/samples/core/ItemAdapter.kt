@@ -11,7 +11,7 @@ import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.Model
 
 abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var items = mutableListOf<T>()
+    private var items = mutableListOf<T>() // List that gets displayed by viewHolder
     companion object {
         private lateinit var context: Context
         lateinit var activity: Activity
@@ -36,11 +36,19 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         fun bind(data: T)
     }
 
+    // Returns the size of the list
     override fun getItemCount() = items.size
+
+    // Returns the ViewHolder
     abstract fun getViewHolder(view: View): RecyclerView.ViewHolder
+
+    // Returns the layout
     abstract fun getLayout(): Int
+
+    // Returns the model class
     abstract fun getModelClass(): Class<out T>
 
+    // Queries models from Datastore into a list
     open fun query() {
         Amplify.DataStore.query(
             getModelClass(),
@@ -58,6 +66,7 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         )
     }
 
+    // Saves models into Datastore
     fun save(model: T) {
         Amplify.DataStore.save(
             model,
@@ -66,11 +75,13 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         )
     }
 
+    // Adds a model to DataStore if save is true, otherwise only adds model to list
     fun addModel(model: T, save: Boolean) {
         items.add(model)
         if (save) save(model)
     }
 
+    // Deletes a model from Datastore and list
     open fun deleteModel(position: Int): T {
         val item = removeItemFromList(position)
         Amplify.DataStore.delete(
@@ -81,15 +92,18 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         return item
     }
 
+    // Sets a model at a certain position in the list
     fun setModel(position: Int, model: T) {
         items[position] = model
         save(model)
     }
 
+    // Returns a model at a certain position
     fun getItem(position: Int): T {
         return items[position]
     }
 
+    // Removes a model at a certain position
     fun removeItemFromList(position: Int): T {
         val item = items[position]
         items.remove(item)
@@ -97,18 +111,22 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
         return item
     }
 
+    // Appends another list to this list
     fun appendList(list: List<T>) {
         items.addAll(list)
     }
 
+    // Clears list
     fun clearList() {
         items.clear()
     }
 
+    // Returns list
     fun getList(): MutableList<T> {
         return items
     }
 
+    // Sets list with another list
     fun setList(list: MutableList<T>) {
         items = list
     }

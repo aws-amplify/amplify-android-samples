@@ -63,6 +63,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         }
         view.findViewById<EditText>(R.id.todo_text_entry).setText(text)
 
+        // Listener for text input in textbox
         textBox.addTextChangedListener(
             object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -82,6 +83,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
             }
         )
         saveBtn.isEnabled = !isNewItem
+        // Saves an item when save button is clicked
         saveBtn.setOnClickListener {
             if (isNewItem) {
                 val todoEntry = textBox.text.toString()
@@ -100,6 +102,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
             }
         }
 
+        // Makes priority radio buttons visible/gone
         priorityBtn.setOnClickListener {
             if (priorityRadioGroup.visibility == View.GONE)
                 priorityRadioGroup.visibility = View.VISIBLE
@@ -107,6 +110,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
                 priorityRadioGroup.visibility = View.GONE
         }
 
+        // Deletes the model when trash button is clicked
         trashBtn.setOnClickListener {
             itemAdapter.deleteModel(position)
             textBox.text.clear()
@@ -117,6 +121,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         return view
     }
 
+    // Returns the priority set in RadioGroup, default is Priority.LOW
     private fun getPriority(view: View, priorityRadioGroup: RadioGroup, priority: Priority): Priority {
         val selectedOption = priorityRadioGroup.checkedRadioButtonId
         val selectedRadioBtn: RadioButton = view.findViewById(selectedOption)

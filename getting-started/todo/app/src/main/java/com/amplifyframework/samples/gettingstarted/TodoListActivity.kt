@@ -15,7 +15,7 @@ import com.amplifyframework.samples.core.ListActivity
 
 class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
     private val itemAdapter: TodoItemAdapter = TodoItemAdapter(this)
-    private var showStatus: Boolean = true
+    private var hideStatus: Boolean = true // Whether we want to show or hide completed tasks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +23,7 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
         recyclerView.adapter = itemAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // Swipe to delete feature
         val swipeHandler = object : SwipeToDelete(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = recyclerView.adapter as TodoItemAdapter
@@ -34,49 +35,52 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
         ItemAdapter.setContext(this)
     }
 
+    // Call query on start to load from backend
+    override fun onStart() {
+        super.onStart()
+        itemAdapter.query(hideStatus)
+    }
+
+    // Inflates the options menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.todo_menu, menu)
         return true
     }
 
-    override fun onStart() {
-        super.onStart()
-        itemAdapter.query(showStatus)
-    }
-
+    // Click listener for menu items
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.show_hide -> {
                 if (item.title == getString(R.string.show_tasks)) {
-                    showStatus = false
+                    hideStatus = false
                     itemAdapter.showCompletedTasks()
                     item.title = getString(R.string.hide_tasks)
                 } else {
-                    showStatus = true
+                    hideStatus = true
                     itemAdapter.hideCompletedTasks()
                     item.title = getString(R.string.show_tasks)
                 }
                 true
             }
             R.id.created -> {
-                itemAdapter.sortDateCreated(showStatus)
+                itemAdapter.sortDateCreated(hideStatus)
                 true
             }
             R.id.priority_asc -> {
-                itemAdapter.sortPriorityAsc(showStatus)
+                itemAdapter.sortPriorityAsc(hideStatus)
                 true
             }
             R.id.priority_des -> {
-                itemAdapter.sortPriorityDes(showStatus)
+                itemAdapter.sortPriorityDes(hideStatus)
                 true
             }
             R.id.name_asc -> {
-                itemAdapter.sortNameAsc(showStatus)
+                itemAdapter.sortNameAsc(hideStatus)
                 true
             }
             R.id.name_des -> {
-                itemAdapter.sortNameDes(showStatus)
+                itemAdapter.sortNameDes(hideStatus)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -88,8 +92,10 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
         optionsInstance.show(supportFragmentManager, "TAG")
     }
 
+    // If hideStatus is true, when checkBox is clicked, remove item from list and mark it complete/incomplete
+    // Else, simply get the item and mark it complete/incomplete
     override fun onCheckClick(position: Int, isChecked: Boolean) {
-        val todo: Todo = if (showStatus)
+        val todo: Todo = if (hideStatus)
             itemAdapter.removeItemFromList(position)
         else
             itemAdapter.getItem(position)
@@ -100,6 +106,7 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
             itemAdapter.markIncomplete(todo)
     }
 
+    // When text is clicked, open up the OptionsBarFragment to edit item
     override fun onTextClick(position: Int, text: String, priority: Priority) {
         val optionsInstance = OptionsBarFragment.newInstance(itemAdapter, false, position, text, priority)
         optionsInstance.show(supportFragmentManager, "TAG")
