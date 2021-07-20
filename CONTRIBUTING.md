@@ -51,7 +51,7 @@ Note: JDK 11, 12, 13, etc. have known issues and are not supported.
 Now, clone the Amplify Android project from GitHub.
 
 ```shell
-git clone git@github.com:aws-amplify/amplify-android.git
+git clone git@github.com:aws-amplify/amplify-android-samples.git
 ```
 Load this project into Android Studio by selecting File > Open, and choosing
 the root directory of the project (`amplify-android`). Alternately, cd into this
