@@ -104,10 +104,11 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
 
         // Makes priority radio buttons visible/gone
         priorityBtn.setOnClickListener {
-            if (priorityRadioGroup.visibility == View.GONE)
+            if (priorityRadioGroup.visibility == View.GONE) {
                 priorityRadioGroup.visibility = View.VISIBLE
-            else
+            } else {
                 priorityRadioGroup.visibility = View.GONE
+            }
         }
 
         // Deletes the model when trash button is clicked

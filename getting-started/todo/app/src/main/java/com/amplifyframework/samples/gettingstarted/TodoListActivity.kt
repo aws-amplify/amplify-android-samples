@@ -67,19 +67,19 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
                 true
             }
             R.id.priority_asc -> {
-                itemAdapter.sortPriority(hideStatus, TodoItemAdapter.sortOrder.ASCENDING)
+                itemAdapter.sortPriority(hideStatus, TodoItemAdapter.SortOrder.ASCENDING)
                 true
             }
             R.id.priority_des -> {
-                itemAdapter.sortPriority(hideStatus, TodoItemAdapter.sortOrder.DESCENDING)
+                itemAdapter.sortPriority(hideStatus, TodoItemAdapter.SortOrder.DESCENDING)
                 true
             }
             R.id.name_asc -> {
-                itemAdapter.sortName(hideStatus, TodoItemAdapter.sortOrder.ASCENDING)
+                itemAdapter.sortName(hideStatus, TodoItemAdapter.SortOrder.ASCENDING)
                 true
             }
             R.id.name_des -> {
-                itemAdapter.sortName(hideStatus, TodoItemAdapter.sortOrder.DESCENDING)
+                itemAdapter.sortName(hideStatus, TodoItemAdapter.SortOrder.DESCENDING)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -94,15 +94,16 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
     // If hideStatus is true, when checkBox is clicked, remove item from list and mark it complete/incomplete
     // Else, simply get the item and mark it complete/incomplete
     override fun onCheckClick(position: Int, isChecked: Boolean) {
-        val todo: Todo = if (hideStatus)
+        val todo: Todo = if (hideStatus) {
             itemAdapter.removeItemFromList(position)
-        else
+        } else {
             itemAdapter.getItem(position)
-
-        if (isChecked)
+        }
+        if (isChecked) {
             itemAdapter.markComplete(todo)
-        else
-            itemAdapter.markIncomplete(todo)
+        } else {
+            itemAdapter.markIncomplete(position, todo)
+        }
     }
 
     // When text is clicked, open up the OptionsBarFragment to edit item

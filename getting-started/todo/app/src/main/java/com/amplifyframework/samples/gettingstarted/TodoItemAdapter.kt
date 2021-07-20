@@ -1,11 +1,11 @@
 package com.amplifyframework.samples.gettingstarted
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.QuerySortBy
@@ -66,8 +66,9 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                     }
                     Log.i("Tutorial", "Item loaded: ${item.id}")
                 }
-                if (!showStatus)
+                if (!showStatus) {
                     appendList(completedItems)
+                }
                 activity.runOnUiThread {
                     notifyDataSetChanged()
                 }
@@ -80,41 +81,43 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     fun sortDateCreated(showStatus: Boolean) {
         query(showStatus)
     }
-    enum class sortOrder {
+    enum class SortOrder {
         ASCENDING, DESCENDING
     }
 
     // Sorts list by priority ascending
-    fun sortPriority(showStatus: Boolean, sort: sortOrder) {
+    fun sortPriority(showStatus: Boolean, sort: SortOrder) {
         val newList = getList().filter { !completedItems.contains(it) }
-        if (sort == sortOrder.ASCENDING) {
+        if (sort == SortOrder.ASCENDING) {
             setList(newList.sortedBy { it.priority }.asReversed().toMutableList())
-            if (!showStatus)
+            if (!showStatus) {
                 appendList(completedItems.sortedBy { it.priority }.asReversed().toMutableList())
-        }
-        else if (sort == sortOrder.DESCENDING) {
+            }
+        } else if (sort == SortOrder.DESCENDING) {
             setList(newList.sortedBy { it.priority }.toMutableList())
-            if (!showStatus)
+            if (!showStatus) {
                 appendList(completedItems.sortedBy { it.priority }.toMutableList())
+            }
         }
         notifyDataSetChanged()
     }
 
     // Sorts by name ascending
-    fun sortName(showStatus: Boolean, sort: sortOrder) {
-        if (sort == sortOrder.ASCENDING)
+    fun sortName(showStatus: Boolean, sort: SortOrder) {
+        if (sort == SortOrder.ASCENDING) {
             sort(Todo.NAME.ascending(), showStatus)
-        else if (sort == sortOrder.DESCENDING)
+        } else if (sort == SortOrder.DESCENDING) {
             sort(Todo.NAME.descending(), showStatus)
+        }
     }
 
     // Sort method that takes in a QuerySortBy and sorts using DataStore.query()
-    private fun sort(q: QuerySortBy, showStatus: Boolean) {
+    private fun sort(sortBy: QuerySortBy, showStatus: Boolean) {
         clearList()
         completedItems.clear()
         Amplify.DataStore.query(
             getModelClass(),
-            Where.sorted(q),
+            Where.sorted(sortBy),
             { results ->
                 while (results.hasNext()) {
                     val item = results.next()
@@ -125,8 +128,9 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                     }
                     Log.i("Tutorial", "Item loaded: ${item.id}")
                 }
-                if (!showStatus)
+                if (!showStatus) {
                     appendList(completedItems)
+                }
                 activity.runOnUiThread {
                     notifyDataSetChanged()
                 }
@@ -147,18 +151,18 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     }
 
     // Marks an item as incomplete by setting completedAt to null
-    fun markIncomplete(todo: Todo) {
+    fun markIncomplete(position: Int, todo: Todo) {
         completedItems.remove(todo)
         val updatedTodo = updateModel(todo, todo.name, todo.priority, null)
-        save(updatedTodo)
+        setModel(position, updatedTodo)
     }
 
     // Defines the colors corresponding to each Priority
     private fun priorityColor(priority: Priority): Int {
         return when (priority) {
-            Priority.LOW -> Color.argb(200, 51, 181, 129) // Turquoise
-            Priority.NORMAL -> Color.argb(200, 155, 179, 0) // Yellow
-            Priority.HIGH -> Color.argb(200, 201, 21, 23) // Red
+            Priority.LOW -> ContextCompat.getColor(cont, R.color.blue)
+            Priority.NORMAL -> ContextCompat.getColor(cont, R.color.yellow)
+            Priority.HIGH -> ContextCompat.getColor(cont, R.color.red)
         }
     }
 
@@ -186,15 +190,14 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
 
     // Hides completed tasks in recyclerView
     fun hideCompletedTasks() {
-        setList(getList().filter { !completedItems.contains(it) }.toMutableList())
+        setList(getList().filter { other -> !completedItems.any { it.id == other.id } }.toMutableList())
         notifyDataSetChanged()
     }
 
     // Deletes model from ItemAdapter list and completedItems list
     override fun deleteModel(position: Int): Todo {
         val todo = super.deleteModel(position)
-        if (completedItems.contains(todo))
-            completedItems.remove(todo)
+        completedItems.remove(todo)
         return todo
     }
 

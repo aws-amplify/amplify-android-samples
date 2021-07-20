@@ -13,11 +13,11 @@ import com.amplifyframework.core.model.Model
 abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items = mutableListOf<T>() // List that gets displayed by viewHolder
     companion object {
-        private lateinit var context: Context
+        lateinit var cont: Context
         lateinit var activity: Activity
         fun setContext(con: Context) {
-            context = con
-            activity = context as Activity
+            cont = con
+            activity = cont as Activity
         }
     }
 
