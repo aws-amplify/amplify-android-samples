@@ -67,7 +67,7 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         textBox.addTextChangedListener(
             object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    saveBtn.isEnabled = s.toString().trim { it <= ' ' }.isNotEmpty()
+                    saveBtn.isEnabled = !s.toString().isNullOrBlank()
                 }
                 override fun beforeTextChanged(
                     s: CharSequence,
