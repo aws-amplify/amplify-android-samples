@@ -48,7 +48,7 @@ export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/jdk/Contents/Hom
 ```
 Note: JDK 11, 12, 13, etc. have known issues and are not supported.
 
-Now, clone the Amplify Android project from GitHub.
+Now, clone the Amplify Android Samples project from GitHub.
 
 ```shell
 git clone git@github.com:aws-amplify/amplify-android-samples.git
