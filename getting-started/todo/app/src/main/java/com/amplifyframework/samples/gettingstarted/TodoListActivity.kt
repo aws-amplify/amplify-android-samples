@@ -67,19 +67,19 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
                 true
             }
             R.id.priority_asc -> {
-                itemAdapter.sortPriorityAsc(hideStatus)
+                itemAdapter.sortPriority(hideStatus, TodoItemAdapter.sortOrder.ASCENDING)
                 true
             }
             R.id.priority_des -> {
-                itemAdapter.sortPriorityDes(hideStatus)
+                itemAdapter.sortPriority(hideStatus, TodoItemAdapter.sortOrder.DESCENDING)
                 true
             }
             R.id.name_asc -> {
-                itemAdapter.sortNameAsc(hideStatus)
+                itemAdapter.sortName(hideStatus, TodoItemAdapter.sortOrder.ASCENDING)
                 true
             }
             R.id.name_des -> {
-                itemAdapter.sortNameDes(hideStatus)
+                itemAdapter.sortName(hideStatus, TodoItemAdapter.sortOrder.DESCENDING)
                 true
             }
             else -> super.onOptionsItemSelected(item)

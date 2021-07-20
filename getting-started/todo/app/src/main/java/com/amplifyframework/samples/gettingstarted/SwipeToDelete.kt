@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class SwipeToDelete(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     private val background = ColorDrawable()
-    private val backgroundColor = Color.parseColor("#f44336")
-    private val deleteIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_24)
-    private val inHeight = deleteIcon?.intrinsicHeight
-    private val inWidth = deleteIcon?.intrinsicWidth
+    private val backgroundColor = ContextCompat.getColor(context, R.color.red)
+    private var deleteIcon: Drawable = requireNotNull(ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_24))
+    private val inHeight = deleteIcon.intrinsicHeight
+    private val inWidth = deleteIcon.intrinsicWidth
 
     override fun onMove(
         recyclerView: RecyclerView,
@@ -45,14 +45,14 @@ abstract class SwipeToDelete(context: Context) : ItemTouchHelper.SimpleCallback(
         )
         background.draw(c)
 
-        val iconTop = itemView.top + (itemHeight - inHeight!!) / 2
+        val iconTop = itemView.top + (itemHeight - inHeight) / 2
         val iconMargin = (itemHeight - inHeight) / 2
-        val iconLeft = itemView.right - iconMargin - inWidth!!
+        val iconLeft = itemView.right - iconMargin - inWidth
         val iconRight = itemView.right - iconMargin
         val iconBottom = iconTop + inHeight
 
-        deleteIcon?.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-        deleteIcon?.draw(c)
+        deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+        deleteIcon.draw(c)
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }

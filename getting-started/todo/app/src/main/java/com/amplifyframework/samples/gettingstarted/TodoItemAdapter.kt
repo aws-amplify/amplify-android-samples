@@ -80,33 +80,32 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     fun sortDateCreated(showStatus: Boolean) {
         query(showStatus)
     }
-
-    // Sorts list by priority ascending
-    fun sortPriorityAsc(showStatus: Boolean) {
-        val newList = getList().filter { !completedItems.contains(it) }
-        setList(newList.sortedBy { it.priority }.asReversed().toMutableList())
-        if (!showStatus)
-            appendList(completedItems.sortedBy { it.priority }.asReversed().toMutableList())
-        notifyDataSetChanged()
+    enum class sortOrder {
+        ASCENDING, DESCENDING
     }
 
-    // Sorts list by priority descending
-    fun sortPriorityDes(showStatus: Boolean) {
+    // Sorts list by priority ascending
+    fun sortPriority(showStatus: Boolean, sort: sortOrder) {
         val newList = getList().filter { !completedItems.contains(it) }
-        setList(newList.sortedBy { it.priority }.toMutableList())
-        if (!showStatus)
-            appendList(completedItems.sortedBy { it.priority }.toMutableList())
+        if (sort == sortOrder.ASCENDING) {
+            setList(newList.sortedBy { it.priority }.asReversed().toMutableList())
+            if (!showStatus)
+                appendList(completedItems.sortedBy { it.priority }.asReversed().toMutableList())
+        }
+        else if (sort == sortOrder.DESCENDING) {
+            setList(newList.sortedBy { it.priority }.toMutableList())
+            if (!showStatus)
+                appendList(completedItems.sortedBy { it.priority }.toMutableList())
+        }
         notifyDataSetChanged()
     }
 
     // Sorts by name ascending
-    fun sortNameAsc(showStatus: Boolean) {
-        sort(Todo.NAME.ascending(), showStatus)
-    }
-
-    // Sorts by name descending
-    fun sortNameDes(showStatus: Boolean) {
-        sort(Todo.NAME.descending(), showStatus)
+    fun sortName(showStatus: Boolean, sort: sortOrder) {
+        if (sort == sortOrder.ASCENDING)
+            sort(Todo.NAME.ascending(), showStatus)
+        else if (sort == sortOrder.DESCENDING)
+            sort(Todo.NAME.descending(), showStatus)
     }
 
     // Sort method that takes in a QuerySortBy and sorts using DataStore.query()
