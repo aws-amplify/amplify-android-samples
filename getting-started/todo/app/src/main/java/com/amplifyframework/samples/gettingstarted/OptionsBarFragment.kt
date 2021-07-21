@@ -11,9 +11,13 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import com.amplifyframework.datastore.generated.model.Priority
+import com.amplifyframework.samples.gettingstarted.databinding.OptionsBarBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class OptionsBarFragment : BottomSheetDialogFragment() {
+    private var _binding: OptionsBarBinding? = null
+    private val binding get() = _binding!!
+
     companion object {
         const val IS_NEW_ITEM = "IsNewItem"
         const val POSITION = "Position"
@@ -43,31 +47,32 @@ class OptionsBarFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = OptionsBarBinding.inflate(inflater, container, false)
+        val view = binding.root
         val b: Bundle? = arguments
         val itemAdapter: TodoItemAdapter = b?.getSerializable(ITEM_ADAPTER) as TodoItemAdapter
         val position: Int = b.getInt(POSITION)
         var isNewItem: Boolean = b.getBoolean(IS_NEW_ITEM)
         var priority: Priority = b.getSerializable(PRIORITY) as Priority
         val text: String? = b.getString(ITEM_TEXT)
-        val view: View = inflater.inflate(R.layout.options_bar, container, false)
-        val saveBtn: View = view.findViewById(R.id.save_button)
-        val priorityBtn: View = view.findViewById(R.id.priority_button)
-        val trashBtn: View = view.findViewById(R.id.trash_button)
-        val priorityRadioGroup: RadioGroup = view.findViewById(R.id.radioGroup_priority)
-        val textBox: EditText = view.findViewById(R.id.todo_text_entry)
+        val saveBtn = binding.saveButton
+        val priorityBtn = binding.priorityButton
+        val trashBtn = binding.trashButton
+        val priorityRadioGroup = binding.radioGroupPriority
+        val textBox = binding.todoTextEntry
 
         when (priority) {
             Priority.LOW -> priorityRadioGroup.check(R.id.radioButton_low)
             Priority.NORMAL -> priorityRadioGroup.check(R.id.radioButton_med)
             Priority.HIGH -> priorityRadioGroup.check(R.id.radioButton_high)
         }
-        view.findViewById<EditText>(R.id.todo_text_entry).setText(text)
+        textBox.setText(text)
 
         // Listener for text input in textbox
         textBox.addTextChangedListener(
             object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    saveBtn.isEnabled = !s.toString().isNullOrBlank()
+                    saveBtn.isEnabled = s.toString().isNotBlank()
                 }
                 override fun beforeTextChanged(
                     s: CharSequence,

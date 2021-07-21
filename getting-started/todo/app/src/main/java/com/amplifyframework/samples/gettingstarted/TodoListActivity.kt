@@ -11,6 +11,7 @@ import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.samples.core.ItemAdapter
 import com.amplifyframework.samples.core.ListActivity
+import com.amplifyframework.samples.core.databinding.ActivityMainBinding
 
 class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
     private val itemAdapter: TodoItemAdapter = TodoItemAdapter(this)
