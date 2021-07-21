@@ -2,7 +2,10 @@ package com.amplifyframework.datastore.generated.model;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
 import com.amplifyframework.core.model.query.predicate.QueryField;
@@ -15,16 +18,18 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Todo type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Todos")
+@ModelConfig(pluralName = "Todos", authRules = {
+  @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
 public final class Todo implements Model {
   public static final QueryField ID = field("Todo", "id");
   public static final QueryField NAME = field("Todo", "name");
   public static final QueryField PRIORITY = field("Todo", "priority");
-  public static final QueryField COMPLETED = field("Todo", "completed");
+  public static final QueryField COMPLETED_AT = field("Todo", "completedAt");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String name;
   private final @ModelField(targetType="Priority", isRequired = true) Priority priority;
-  private final @ModelField(targetType="AWSDateTime") Temporal.DateTime completed;
+  private final @ModelField(targetType="AWSDateTime") Temporal.DateTime completedAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -39,8 +44,8 @@ public final class Todo implements Model {
       return priority;
   }
   
-  public Temporal.DateTime getCompleted() {
-      return completed;
+  public Temporal.DateTime getCompletedAt() {
+      return completedAt;
   }
   
   public Temporal.DateTime getCreatedAt() {
@@ -51,11 +56,11 @@ public final class Todo implements Model {
       return updatedAt;
   }
   
-  private Todo(String id, String name, Priority priority, Temporal.DateTime completed) {
+  private Todo(String id, String name, Priority priority, Temporal.DateTime completedAt) {
     this.id = id;
     this.name = name;
     this.priority = priority;
-    this.completed = completed;
+    this.completedAt = completedAt;
   }
   
   @Override
@@ -69,7 +74,7 @@ public final class Todo implements Model {
       return ObjectsCompat.equals(getId(), todo.getId()) &&
               ObjectsCompat.equals(getName(), todo.getName()) &&
               ObjectsCompat.equals(getPriority(), todo.getPriority()) &&
-              ObjectsCompat.equals(getCompleted(), todo.getCompleted()) &&
+              ObjectsCompat.equals(getCompletedAt(), todo.getCompletedAt()) &&
               ObjectsCompat.equals(getCreatedAt(), todo.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), todo.getUpdatedAt());
       }
@@ -81,7 +86,7 @@ public final class Todo implements Model {
       .append(getId())
       .append(getName())
       .append(getPriority())
-      .append(getCompleted())
+      .append(getCompletedAt())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -95,7 +100,7 @@ public final class Todo implements Model {
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("priority=" + String.valueOf(getPriority()) + ", ")
-      .append("completed=" + String.valueOf(getCompleted()) + ", ")
+      .append("completedAt=" + String.valueOf(getCompletedAt()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -137,7 +142,7 @@ public final class Todo implements Model {
     return new CopyOfBuilder(id,
       name,
       priority,
-      completed);
+      completedAt);
   }
   public interface NameStep {
     PriorityStep name(String name);
@@ -152,7 +157,7 @@ public final class Todo implements Model {
   public interface BuildStep {
     Todo build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep completed(Temporal.DateTime completed);
+    BuildStep completedAt(Temporal.DateTime completedAt);
   }
   
 
@@ -160,7 +165,7 @@ public final class Todo implements Model {
     private String id;
     private String name;
     private Priority priority;
-    private Temporal.DateTime completed;
+    private Temporal.DateTime completedAt;
     @Override
      public Todo build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -169,7 +174,7 @@ public final class Todo implements Model {
           id,
           name,
           priority,
-          completed);
+          completedAt);
     }
     
     @Override
@@ -187,8 +192,8 @@ public final class Todo implements Model {
     }
     
     @Override
-     public BuildStep completed(Temporal.DateTime completed) {
-        this.completed = completed;
+     public BuildStep completedAt(Temporal.DateTime completedAt) {
+        this.completedAt = completedAt;
         return this;
     }
     
@@ -215,11 +220,11 @@ public final class Todo implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, Priority priority, Temporal.DateTime completed) {
+    private CopyOfBuilder(String id, String name, Priority priority, Temporal.DateTime completedAt) {
       super.id(id);
       super.name(name)
         .priority(priority)
-        .completed(completed);
+        .completedAt(completedAt);
     }
     
     @Override
@@ -233,8 +238,8 @@ public final class Todo implements Model {
     }
     
     @Override
-     public CopyOfBuilder completed(Temporal.DateTime completed) {
-      return (CopyOfBuilder) super.completed(completed);
+     public CopyOfBuilder completedAt(Temporal.DateTime completedAt) {
+      return (CopyOfBuilder) super.completedAt(completedAt);
     }
   }
   

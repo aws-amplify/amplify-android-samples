@@ -3,16 +3,18 @@ package com.amplifyframework.samples.core
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-
+import com.amplifyframework.samples.core.databinding.ActivityMainBinding
 
 abstract class ListActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        val fab: View = findViewById(R.id.floatingActionButton)
-        fab.setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
             fabAction()
         }
     }
