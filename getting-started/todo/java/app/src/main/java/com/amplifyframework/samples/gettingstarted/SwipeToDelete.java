@@ -40,7 +40,7 @@ public abstract class SwipeToDelete extends ItemTouchHelper.SimpleCallback {
 
         this.background.setColor(this.backgroundColor);
         this.background.setBounds(
-                itemView.getRight() + (int)dX,
+                itemView.getRight() + (int) dX,
                 itemView.getTop(),
                 itemView.getRight(),
                 itemView.getBottom());

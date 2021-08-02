@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.amplifyframework.datastore.generated.model.Priority;
 import com.amplifyframework.datastore.generated.model.Todo;
@@ -22,9 +23,11 @@ public class TodoListActivity extends ListActivity implements TodoItemAdapter.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        SwipeRefreshLayout swipeRefresh = findViewById(R.id.swiperefresh);
         recyclerView.setAdapter(itemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Swipe to delete feature
         SwipeToDelete swipeHandler = new SwipeToDelete(this) {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 TodoItemAdapter adapter = (TodoItemAdapter) recyclerView.getAdapter();
@@ -32,11 +35,21 @@ public class TodoListActivity extends ListActivity implements TodoItemAdapter.On
                 adapter.deleteModel(viewHolder.getAdapterPosition());
             }
         };
+
+        // Pull to refresh feature
+        swipeRefresh.setOnRefreshListener(
+                () -> {
+                    itemAdapter.query(hideStatus);
+                    swipeRefresh.setRefreshing(false);
+                }
+        );
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeHandler);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         ItemAdapter.setContext(this);
 
-         itemAdapter.observe(hideStatus);
+        // Observe changes bi-directional
+        itemAdapter.observe();
     }
 
     // Call query on start to load from backend

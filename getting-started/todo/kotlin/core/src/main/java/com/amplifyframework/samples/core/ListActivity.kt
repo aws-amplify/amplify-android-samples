@@ -1,7 +1,6 @@
 package com.amplifyframework.samples.core
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.amplifyframework.samples.core.databinding.ActivityMainBinding
 
@@ -17,6 +16,7 @@ abstract class ListActivity : AppCompatActivity() {
         binding.floatingActionButton.setOnClickListener {
             fabAction()
         }
+
     }
 
     abstract fun fabAction()

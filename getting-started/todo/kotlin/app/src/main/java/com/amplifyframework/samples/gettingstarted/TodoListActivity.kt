@@ -1,14 +1,13 @@
 package com.amplifyframework.samples.gettingstarted
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.amplifyframework.core.Amplify
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.samples.core.ItemAdapter
@@ -18,10 +17,13 @@ import com.amplifyframework.samples.core.databinding.ActivityMainBinding
 class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
     private val itemAdapter: TodoItemAdapter = TodoItemAdapter(this)
     private var hideStatus: Boolean = true // Whether we want to show or hide completed tasks
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        val swipeRefresh = findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
         recyclerView.adapter = itemAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -32,6 +34,13 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
                 adapter.deleteModel(viewHolder.adapterPosition)
             }
         }
+
+        // Pull to refresh feature
+        swipeRefresh.setOnRefreshListener {
+            itemAdapter.query(hideStatus)
+            swipeRefresh.isRefreshing = false
+        }
+
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
         ItemAdapter.setContext(this)

@@ -35,16 +35,15 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
     private final TodoItemAdapter.OnItemClickListener listener;
 
     // Dynamically updates data to storage engine
-    public void observe(boolean showStatus) {
+    public void observe() {
         Amplify.DataStore.observe(Todo.class,
                 started -> Log.i("MyAmplifyApp", "Observation began."),
-                change -> {
-                   query(showStatus);
-                },
+                change -> Log.i("Tutorial", change.item().toString()),
                 failure -> Log.e("Tutorial", "Observation failed.", failure),
                 () -> Log.i("Tutorial", "Observation complete.")
         );
     }
+
     public TodoItemAdapter(OnItemClickListener listener) {
         this.listener = listener;
         completedItems = new ArrayList<>();
@@ -119,6 +118,7 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
 
     public static class PrioritySorter implements Comparator<Todo> {
         private final SortOrder sort;
+
         public PrioritySorter(SortOrder sort) {
             this.sort = sort;
         }
@@ -128,8 +128,7 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
                 return t1.getPriority().compareTo(t2.getPriority());
             } else if (sort == SortOrder.DESCENDING) {
                 return t2.getPriority().compareTo(t1.getPriority());
-            }
-            else {
+            } else {
                 return 0;
             }
         }
@@ -211,11 +210,9 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
         int color = 0;
         if (priority == Priority.LOW) {
             color = ContextCompat.getColor(cont, R.color.blue);
-        }
-        else if (priority == Priority.NORMAL) {
+        } else if (priority == Priority.NORMAL) {
             color = ContextCompat.getColor(cont, R.color.yellow);
-        }
-        else if (priority == Priority.HIGH) {
+        } else if (priority == Priority.HIGH) {
             color = ContextCompat.getColor(cont, R.color.red);
         }
         return color;
@@ -225,8 +222,8 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
     private void setCheckBoxColor(AppCompatCheckBox checkBox, int color) {
         ColorStateList colorstateList = new ColorStateList(
                 new int[][]{
-                    new int[]    {-android.R.attr.state_checked}, // unchecked
-                    new int[]    {android.R.attr.state_checked} // checked
+                        new int[]{-android.R.attr.state_checked}, // unchecked
+                        new int[]{android.R.attr.state_checked} // checked
                 },
                 new int[]{
                         color, // unchecked color
@@ -302,8 +299,7 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
             int position = getAdapterPosition();
             if (v.getId() == R.id.todo_checkbox) {
                 listener.onCheckClick(position, checkBox.isChecked());
-            }
-            else if (v.getId() == R.id.todo_row_item) {
+            } else if (v.getId() == R.id.todo_row_item) {
                 listener.onTextClick(position, text, priority);
             }
         }
@@ -311,6 +307,7 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
 
     interface OnItemClickListener {
         void onCheckClick(int position, boolean isChecked);
+
         void onTextClick(int position, String text, Priority priority);
     }
 

@@ -26,10 +26,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     fun observe() {
         Amplify.DataStore.observe(Todo::class.java,
             { Log.i("MyAmplifyApp", "Observation began") },
-            {
-                val todo = it.item();
-                addModel(todo, false);
-            },
+            { Log.i("MyAmplifyApp", it.item().toString()) },
             { Log.e("MyAmplifyApp", "Observation failed", it) },
             { Log.i("MyAmplifyApp", "Observation complete") }
         )
