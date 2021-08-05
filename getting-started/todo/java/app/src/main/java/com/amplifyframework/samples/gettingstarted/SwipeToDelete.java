@@ -17,8 +17,8 @@ public abstract class SwipeToDelete extends ItemTouchHelper.SimpleCallback {
     private final ColorDrawable background;
     private final int backgroundColor;
     private final Drawable deleteIcon;
-    private final int inHeight;
-    private final int inWidth;
+    private int inHeight = 0;
+    private int inWidth = 0;
 
     public boolean onMove(
             @NotNull RecyclerView recyclerView,
@@ -63,8 +63,9 @@ public abstract class SwipeToDelete extends ItemTouchHelper.SimpleCallback {
         this.background = new ColorDrawable();
         this.backgroundColor = ContextCompat.getColor(context, R.color.red);
         this.deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_24);
-        assert this.deleteIcon != null;
-        this.inHeight = this.deleteIcon.getIntrinsicHeight();
-        this.inWidth = this.deleteIcon.getIntrinsicWidth();
+        if (this.deleteIcon != null) {
+            this.inHeight = this.deleteIcon.getIntrinsicHeight();
+            this.inWidth = this.deleteIcon.getIntrinsicWidth();
+        }
     }
 }
