@@ -1,5 +1,6 @@
 package com.amplifyframework.samples.gettingstarted;
 
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.View;
@@ -34,13 +35,13 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
     private final List<Todo> completedItems;
     private final TodoItemAdapter.OnItemClickListener listener;
 
-    // Dynamically updates data to storage engine
+    // Reacts dynamically to updates of data to the underlying Storage Engine
     public void observe() {
         Amplify.DataStore.observe(Todo.class,
                 started -> Log.i("MyAmplifyApp", "Observation began."),
-                change -> Log.i("Tutorial", change.item().toString()),
-                failure -> Log.e("Tutorial", "Observation failed.", failure),
-                () -> Log.i("Tutorial", "Observation complete.")
+                change -> Log.i("MyAmplifyApp", change.item().toString()),
+                failure -> Log.e("MyAmplifyApp", "Observation failed.", failure),
+                () -> Log.i("MyAmplifyApp", "Observation complete.")
         );
     }
 
@@ -101,7 +102,9 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
                     if (!showStatus) {
                         appendList(completedItems);
                     }
-                    activity.runOnUiThread(this::notifyDataSetChanged);
+                    if (cont instanceof Activity) {
+                        ((Activity)cont).runOnUiThread(this::notifyDataSetChanged);
+                    }
                 },
                 failure -> Log.e("Tutorial", "Query Failed", failure)
         );
@@ -181,7 +184,9 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
                     if (!showStatus) {
                         appendList(completedItems);
                     }
-                    activity.runOnUiThread(this::notifyDataSetChanged);
+                    if (cont instanceof Activity) {
+                        ((Activity)cont).runOnUiThread(this::notifyDataSetChanged);
+                    }
                 },
                 failure -> Log.e("Tutorial", "Query Failed", failure)
         );

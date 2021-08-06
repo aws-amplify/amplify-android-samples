@@ -14,10 +14,8 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
     private var items = mutableListOf<T>() // List that gets displayed by viewHolder
     companion object {
         lateinit var cont: Context
-        lateinit var activity: Activity
         fun setContext(con: Context) {
             cont = con
-            activity = cont as Activity
         }
     }
 
@@ -58,8 +56,10 @@ abstract class ItemAdapter<T : Model>() : RecyclerView.Adapter<RecyclerView.View
                     items.add(item)
                     Log.i("Tutorial", "Item loaded: ${item.id}")
                 }
-                activity.runOnUiThread {
-                    notifyDataSetChanged()
+                if (cont is Activity) {
+                    (cont as Activity).runOnUiThread {
+                        notifyDataSetChanged()
+                    }
                 }
             },
             { Log.e("Tutorial", "Query Failed: $it") }

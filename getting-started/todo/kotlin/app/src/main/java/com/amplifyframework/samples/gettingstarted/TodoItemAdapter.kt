@@ -1,5 +1,6 @@
 package com.amplifyframework.samples.gettingstarted
 
+import android.app.Activity
 import android.content.res.ColorStateList
 import android.util.Log
 import android.view.View
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit
 class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
     private var completedItems = mutableListOf<Todo>() // A list to hold completed items
 
-    // Dynamically updates data to storage engine
+    // Reacts dynamically to updates of data to the underlying Storage Engine
     fun observe() {
         Amplify.DataStore.observe(Todo::class.java,
             { Log.i("MyAmplifyApp", "Observation began") },
@@ -79,8 +80,10 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                 if (!showStatus) {
                     appendList(completedItems)
                 }
-                activity.runOnUiThread {
-                    notifyDataSetChanged()
+                if (cont is Activity) {
+                    (cont as Activity).runOnUiThread {
+                        notifyDataSetChanged()
+                    }
                 }
             },
             { Log.e("Tutorial", "Query Failed: $it") }
@@ -141,9 +144,12 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
                 if (!showStatus) {
                     appendList(completedItems)
                 }
-                activity.runOnUiThread {
-                    notifyDataSetChanged()
+                if (cont is Activity) {
+                    (cont as Activity).runOnUiThread {
+                        notifyDataSetChanged()
+                    }
                 }
+
             },
             { Log.e("Tutorial", "Query Failed: $it") }
         )

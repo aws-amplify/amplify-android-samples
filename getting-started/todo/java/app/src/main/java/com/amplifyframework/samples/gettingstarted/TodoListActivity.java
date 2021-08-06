@@ -31,8 +31,9 @@ public class TodoListActivity extends ListActivity implements TodoItemAdapter.On
         SwipeToDelete swipeHandler = new SwipeToDelete(this) {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 TodoItemAdapter adapter = (TodoItemAdapter) recyclerView.getAdapter();
-                assert adapter != null;
-                adapter.deleteModel(viewHolder.getAdapterPosition());
+                if (adapter != null) {
+                    adapter.deleteModel(viewHolder.getAdapterPosition());
+                }
             }
         };
 

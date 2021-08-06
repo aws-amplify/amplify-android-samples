@@ -20,11 +20,9 @@ import java.util.List;
 public abstract class ItemAdapter<T extends Model> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<T> items = new ArrayList<>(); // List that gets displayed by viewHolder
     public static Context cont;
-    public static Activity activity;
 
     public static void setContext(Context con) {
         cont = con;
-        activity = (Activity)cont;
     }
 
     @NotNull
@@ -68,7 +66,9 @@ public abstract class ItemAdapter<T extends Model> extends RecyclerView.Adapter<
                         items.add(item);
                         Log.i("Tutorial", "Item loaded: " + item.getId());
                     }
-                    activity.runOnUiThread(this::notifyDataSetChanged);
+                    if (cont instanceof Activity) {
+                        ((Activity)cont).runOnUiThread(this::notifyDataSetChanged);
+                    }
                 },
                 failure -> Log.e("Tutorial", "Query Failed", failure)
         );

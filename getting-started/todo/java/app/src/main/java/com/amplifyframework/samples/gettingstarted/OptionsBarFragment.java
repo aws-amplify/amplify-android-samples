@@ -20,15 +20,21 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
-public class OptionsBarFragment extends BottomSheetDialogFragment {
+public class OptionsBarFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 
     private static final String IS_NEW_ITEM = "IsNewItem";
     private static final String POSITION = "Position";
     private static final String ITEM_ADAPTER = "ItemAdapter";
     private static final String ITEM_TEXT = "ItemText";
     private static final String PRIORITY = "Priority";
+    private View sheetView;
+    private TodoItemAdapter itemAdapter;
+    private int position;
     private boolean isNewItem;
     private Priority priority;
+    private ImageButton saveBtn;
+    private RadioGroup priorityRadioGroup;
+    private EditText textBox;
 
     public OptionsBarFragment(TodoItemAdapter itemAdapter, boolean isNewItem, int position, String text, Priority priority) {
         Bundle b = new Bundle();
@@ -52,19 +58,19 @@ public class OptionsBarFragment extends BottomSheetDialogFragment {
             ViewGroup container,
             Bundle savedInstanceState) {
         OptionsBarBinding _binding = OptionsBarBinding.inflate(inflater, container, false);
-        View view = _binding.getRoot();
+        sheetView = _binding.getRoot();
         Bundle b = getArguments();
         if (b != null) {
-            TodoItemAdapter itemAdapter = (TodoItemAdapter) b.getSerializable(ITEM_ADAPTER);
-            int position = b.getInt(POSITION);
+            itemAdapter = (TodoItemAdapter) b.getSerializable(ITEM_ADAPTER);
+            position = b.getInt(POSITION);
             isNewItem = b.getBoolean(IS_NEW_ITEM);
             priority = (Priority) b.getSerializable(PRIORITY);
             String text = b.getString(ITEM_TEXT);
-            ImageButton saveBtn = _binding.saveButton;
+            saveBtn = _binding.saveButton;
             ImageButton priorityBtn = _binding.priorityButton;
             ImageButton trashBtn = _binding.trashButton;
-            RadioGroup priorityRadioGroup = _binding.radioGroupPriority;
-            EditText textBox = _binding.todoTextEntry;
+            priorityRadioGroup = _binding.radioGroupPriority;
+            textBox = _binding.todoTextEntry;
 
             if (priority == Priority.LOW) {
                 priorityRadioGroup.check(R.id.radioButton_low);
@@ -87,46 +93,11 @@ public class OptionsBarFragment extends BottomSheetDialogFragment {
                 public void afterTextChanged(Editable s) {}
             });
             saveBtn.setEnabled(!isNewItem);
-            // Saves an item when save button is clicked
-            saveBtn.setOnClickListener(v -> {
-                if (isNewItem) {
-                    String todoEntry = textBox.getText().toString();
-                    priority = getPriority(view, priorityRadioGroup, priority);
-                    Todo item = itemAdapter.createModel(todoEntry, priority);
-                    itemAdapter.addModel(item, true);
-                    itemAdapter.notifyItemInserted(itemAdapter.getItemCount() - 1);
-                } else {
-                    Todo item = itemAdapter.getItem(position);
-                    String todoEntry = textBox.getText().toString();
-                    priority = getPriority(view, priorityRadioGroup, priority);
-                    itemAdapter.setModel(position, itemAdapter.updateModel(item, todoEntry, priority, null));
-                    itemAdapter.notifyItemChanged(position);
-                }
-                textBox.getText().clear();
-            });
-            // Makes priority radio buttons visible/gone
-            priorityBtn.setOnClickListener(v -> {
-                if (priorityRadioGroup.getVisibility() == View.GONE) {
-                    priorityRadioGroup.setVisibility(View.VISIBLE);
-                } else {
-                    priorityRadioGroup.setVisibility(View.GONE);
-                }
-            });
-
-            // Deletes the model when trash button is clicked
-            trashBtn.setOnClickListener(v -> {
-                if (isNewItem) {
-                    dismiss();
-                } else {
-                    itemAdapter.deleteModel(position);
-                    textBox.getText().clear();
-                    isNewItem = true;
-                    priority = Priority.LOW;
-                    priorityRadioGroup.check(R.id.radioButton_low);
-                }
-            });
+            saveBtn.setOnClickListener(this);
+            priorityBtn.setOnClickListener(this);
+            trashBtn.setOnClickListener(this);
         }
-        return view;
+        return sheetView;
     }
 
     // Returns the priority set in RadioGroup, default is Priority.LOW
@@ -143,6 +114,61 @@ public class OptionsBarFragment extends BottomSheetDialogFragment {
                 return Priority.HIGH;
             default:
                 return priority;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.save_button) :
+                saveButtonBehavior();
+                break;
+            case (R.id.priority_button):
+                priorityButtonBehavior();
+                break;
+            case (R.id.trash_button):
+                trashButtonBehavior();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void saveButtonBehavior() {
+        if (isNewItem) {
+            String todoEntry = textBox.getText().toString();
+            priority = getPriority(sheetView, priorityRadioGroup, priority);
+            Todo item = itemAdapter.createModel(todoEntry, priority);
+            itemAdapter.addModel(item, true);
+            itemAdapter.notifyItemInserted(itemAdapter.getItemCount() - 1);
+        } else {
+            Todo item = itemAdapter.getItem(position);
+            String todoEntry = textBox.getText().toString();
+            priority = getPriority(sheetView, priorityRadioGroup, priority);
+            itemAdapter.setModel(position, itemAdapter.updateModel(item, todoEntry, priority, null));
+            itemAdapter.notifyItemChanged(position);
+        }
+        textBox.getText().clear();
+    }
+
+    private void priorityButtonBehavior() {
+        if (priorityRadioGroup.getVisibility() == View.GONE) {
+            priorityRadioGroup.setVisibility(View.VISIBLE);
+        } else {
+            priorityRadioGroup.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void trashButtonBehavior() {
+        if (isNewItem) {
+            dismiss();
+        } else {
+            itemAdapter.deleteModel(position);
+            textBox.getText().clear();
+            isNewItem = true;
+            priority = Priority.LOW;
+            priorityRadioGroup.check(R.id.radioButton_low);
         }
     }
 }
