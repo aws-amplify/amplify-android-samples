@@ -4,26 +4,7 @@ This repository contains sample applications to demonstrate usage of Amplify And
 
 ## Setup
 Note: You may need to create an [AWS account](https://docs.amplify.aws/lib/project-setup/prereq/q/platform/android) and configure it before testing the backend.<br />
-[Instructions](https://docs.amplify.aws/lib/datastore/getting-started/q/platform/android#option-2-use-amplify-cli) to install and run this application:
-```
-cd todo/app
-amplify init
-amplify add api
-```
-Edit the `schema.graphql`:
-```
-enum Priority {
-  LOW
-  NORMAL
-  HIGH
-}
 
-type Todo @model {
-  id: ID!
-  name: String!
-  priority: Priority!
-  completedAt: AWSDateTime
-}
-```
-Create the backend:<br />
-`amplify push`
+* Clone the sample GitHub repo under your preferred directory.
+* Change directory to root folder of whichever language you want to use. For Java: `cd getting-started/todo/java`. For Kotlin: `cd getting-started/todo/kotlin`.
+* Follow the [Instructions](https://docs.amplify.aws/start/getting-started/installation/q/integration/android) to provision Amplify and run this application. (Skip "Set up fullstack project" and "Integrate in your app" and any instructions that changes code)
