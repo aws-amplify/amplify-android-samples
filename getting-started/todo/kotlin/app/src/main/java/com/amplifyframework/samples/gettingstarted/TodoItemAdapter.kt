@@ -20,7 +20,8 @@ import java.util.Date
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
-class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(), Serializable {
+class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<Todo>(),
+    Serializable {
     private var completedItems = mutableListOf<Todo>() // A list to hold completed items
 
     // Reacts dynamically to updates of data to the underlying Storage Engine
@@ -43,7 +44,12 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     }
 
     // Updates and returns an existing model
-    fun updateModel(model: Todo, name: String, priority: Priority, completedAt: Temporal.DateTime?): Todo {
+    fun updateModel(
+        model: Todo,
+        name: String,
+        priority: Priority,
+        completedAt: Temporal.DateTime?
+    ): Todo {
         return model.copyOfBuilder()
             .name(name)
             .priority(priority)
@@ -94,6 +100,7 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
     fun sortDateCreated(showStatus: Boolean) {
         query(showStatus)
     }
+
     enum class SortOrder {
         ASCENDING, DESCENDING
     }
@@ -206,7 +213,8 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
 
     // Hides completed tasks in recyclerView
     fun hideCompletedTasks() {
-        setList(getList().filter { other -> !completedItems.any { it.id == other.id } }.toMutableList())
+        setList(getList().filter { other -> !completedItems.any { it.id == other.id } }
+            .toMutableList())
         notifyDataSetChanged()
     }
 
@@ -241,8 +249,12 @@ class TodoItemAdapter(private val listener: OnItemClickListener) : ItemAdapter<T
         override fun onClick(v: View?) {
             val position: Int = adapterPosition
             when (v?.id) {
-                R.id.todo_checkbox -> { listener.onCheckClick(position, checkBox.isChecked) }
-                R.id.todo_row_item -> { listener.onTextClick(position, text, priority) }
+                R.id.todo_checkbox -> {
+                    listener.onCheckClick(position, checkBox.isChecked)
+                }
+                R.id.todo_row_item -> {
+                    listener.onTextClick(position, text, priority)
+                }
             }
         }
     }

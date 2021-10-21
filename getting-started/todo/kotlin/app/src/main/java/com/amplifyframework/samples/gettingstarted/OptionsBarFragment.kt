@@ -1,13 +1,15 @@
 package com.amplifyframework.samples.gettingstarted
 
-import android.media.Image
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.samples.gettingstarted.databinding.OptionsBarBinding
@@ -31,11 +33,13 @@ class OptionsBarFragment : BottomSheetDialogFragment(), View.OnClickListener {
         const val ITEM_ADAPTER = "ItemAdapter"
         const val ITEM_TEXT = "ItemText"
         const val PRIORITY = "Priority"
-        fun newInstance(itemAdapter: TodoItemAdapter,
-                        isNewItem: Boolean,
-                        position: Int,
-                        text: String,
-                        priority: Priority): OptionsBarFragment {
+        fun newInstance(
+            itemAdapter: TodoItemAdapter,
+            isNewItem: Boolean,
+            position: Int,
+            text: String,
+            priority: Priority
+        ): OptionsBarFragment {
             val b = Bundle()
             val optionsBar = OptionsBarFragment()
             b.putBoolean(IS_NEW_ITEM, isNewItem)
@@ -85,16 +89,16 @@ class OptionsBarFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     saveBtn.isEnabled = s.toString().isNotBlank()
                 }
+
                 override fun beforeTextChanged(
                     s: CharSequence,
                     start: Int,
                     count: Int,
                     after: Int
                 ) {
-// TODO Auto-generated method stub
                 }
+
                 override fun afterTextChanged(s: Editable) {
-// TODO Auto-generated method stub
                 }
             }
         )
@@ -106,7 +110,11 @@ class OptionsBarFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     // Returns the priority set in RadioGroup, default is Priority.LOW
-    private fun getPriority(view: View, priorityRadioGroup: RadioGroup, priority: Priority): Priority {
+    private fun getPriority(
+        view: View,
+        priorityRadioGroup: RadioGroup,
+        priority: Priority
+    ): Priority {
         val selectedOption = priorityRadioGroup.checkedRadioButtonId
         val selectedRadioBtn: RadioButton = view.findViewById(selectedOption)
         return when (selectedRadioBtn.id) {
@@ -120,11 +128,11 @@ class OptionsBarFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-       when (v?.id) {
-           R.id.save_button -> saveButtonBehavior()
-           R.id.priority_button -> priorityButtonBehavior()
-           R.id.trash_button -> trashButtonBehavior()
-       }
+        when (v?.id) {
+            R.id.save_button -> saveButtonBehavior()
+            R.id.priority_button -> priorityButtonBehavior()
+            R.id.trash_button -> trashButtonBehavior()
+        }
     }
 
     // Saves an item when pressed
