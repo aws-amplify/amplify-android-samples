@@ -8,10 +8,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class SwipeToDelete(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+abstract class SwipeToDelete(context: Context) :
+    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     private val background = ColorDrawable()
     private val backgroundColor = ContextCompat.getColor(context, R.color.red)
-    private var deleteIcon: Drawable = requireNotNull(ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_24))
+    private var deleteIcon: Drawable =
+        requireNotNull(ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_24))
     private val inHeight = deleteIcon.intrinsicHeight
     private val inWidth = deleteIcon.intrinsicWidth
 

@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/show_hide"
-        android:title="@string/show_tasks" >
-    </item>
-    <item android:id ="@+id/sort"
-        android:title="@string/sort" >
+    <item
+        android:id="@+id/show_hide"
+        android:title="@string/show_tasks"></item>
+    <item
+        android:id="@+id/sort"
+        android:title="@string/sort">
         <menu>
-            <item android:id="@+id/created"
+            <item
+                android:id="@+id/created"
                 android:icon="@drawable/ic_baseline_access_time_24"
-                android:title="@string/by_date_created" >
-            </item>
-            <item android:id="@+id/priority_asc"
+                android:title="@string/by_date_created"></item>
+            <item
+                android:id="@+id/priority_asc"
                 android:icon="@drawable/ic_baseline_arrow_upward_24"
-                android:title="@string/priority" >
-            </item>
-            <item android:id="@+id/priority_des"
+                android:title="@string/priority"></item>
+            <item
+                android:id="@+id/priority_des"
                 android:icon="@drawable/ic_baseline_arrow_downward_24"
-                android:title="@string/priority" >
-            </item>
-            <item android:id="@+id/name_asc"
+                android:title="@string/priority"></item>
+            <item
+                android:id="@+id/name_asc"
                 android:icon="@drawable/ic_baseline_arrow_upward_24"
-                android:title="@string/alphabetically" >
-            </item>
-            <item android:id="@+id/name_des"
+                android:title="@string/alphabetically"></item>
+            <item
+                android:id="@+id/name_des"
                 android:icon="@drawable/ic_baseline_arrow_downward_24"
-                android:title="@string/alphabetically" >
-            </item>
+                android:title="@string/alphabetically"></item>
 
         </menu>
     </item>

@@ -74,7 +74,7 @@ public class OptionsBarFragment extends BottomSheetDialogFragment implements Vie
 
             if (priority == Priority.LOW) {
                 priorityRadioGroup.check(R.id.radioButton_low);
-            } else if (priority == Priority.NORMAL){
+            } else if (priority == Priority.NORMAL) {
                 priorityRadioGroup.check(R.id.radioButton_med);
             } else if (priority == Priority.HIGH) {
                 priorityRadioGroup.check(R.id.radioButton_high);
@@ -87,10 +87,14 @@ public class OptionsBarFragment extends BottomSheetDialogFragment implements Vie
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     saveBtn.setEnabled(!s.toString().isEmpty());
                 }
+
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                }
             });
             saveBtn.setEnabled(!isNewItem);
             saveBtn.setOnClickListener(this);
@@ -120,7 +124,7 @@ public class OptionsBarFragment extends BottomSheetDialogFragment implements Vie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case (R.id.save_button) :
+            case (R.id.save_button):
                 saveButtonBehavior();
                 break;
             case (R.id.priority_button):

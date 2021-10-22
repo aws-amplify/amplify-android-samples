@@ -102,7 +102,8 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
     }
 
     override fun fabAction() {
-        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter, true, -1, "", Priority.LOW)
+        val optionsInstance =
+            OptionsBarFragment.newInstance(itemAdapter, true, -1, "", Priority.LOW)
         optionsInstance.show(supportFragmentManager, "TAG")
     }
 
@@ -123,7 +124,8 @@ class TodoListActivity : ListActivity(), TodoItemAdapter.OnItemClickListener {
 
     // When text is clicked, open up the OptionsBarFragment to edit item
     override fun onTextClick(position: Int, text: String, priority: Priority) {
-        val optionsInstance = OptionsBarFragment.newInstance(itemAdapter, false, position, text, priority)
+        val optionsInstance =
+            OptionsBarFragment.newInstance(itemAdapter, false, position, text, priority)
         optionsInstance.show(supportFragmentManager, "TAG")
     }
 }
