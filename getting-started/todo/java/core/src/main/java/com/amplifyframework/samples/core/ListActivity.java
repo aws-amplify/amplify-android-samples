@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.amplifyframework.samples.core.databinding.ActivityMainBinding;
 
 public abstract class ListActivity extends AppCompatActivity {
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

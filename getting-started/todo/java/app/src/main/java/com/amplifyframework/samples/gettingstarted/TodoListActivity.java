@@ -84,28 +84,22 @@ public class TodoListActivity extends ListActivity implements TodoItemAdapter.On
                 item.setTitle(getString(R.string.show_tasks));
             }
             processing = true;
-        }
-        else if (itemID == R.id.created) {
+        } else if (itemID == R.id.created) {
             itemAdapter.sortDateCreated(hideStatus);
             processing = true;
-        }
-        else if (itemID == R.id.priority_asc) {
+        } else if (itemID == R.id.priority_asc) {
             itemAdapter.sortPriority(hideStatus, TodoItemAdapter.SortOrder.ASCENDING);
             processing = true;
-        }
-        else if (itemID == R.id.priority_des) {
+        } else if (itemID == R.id.priority_des) {
             itemAdapter.sortPriority(hideStatus, TodoItemAdapter.SortOrder.DESCENDING);
             processing = true;
-        }
-        else if (itemID == R.id.name_asc) {
+        } else if (itemID == R.id.name_asc) {
             itemAdapter.sortName(hideStatus, TodoItemAdapter.SortOrder.ASCENDING);
             processing = true;
-        }
-        else if (itemID == R.id.name_des) {
+        } else if (itemID == R.id.name_des) {
             itemAdapter.sortName(hideStatus, TodoItemAdapter.SortOrder.DESCENDING);
             processing = true;
-        }
-        else {
+        } else {
             super.onOptionsItemSelected(item);
         }
         return processing;

@@ -103,7 +103,7 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
                         appendList(completedItems);
                     }
                     if (cont instanceof Activity) {
-                        ((Activity)cont).runOnUiThread(this::notifyDataSetChanged);
+                        ((Activity) cont).runOnUiThread(this::notifyDataSetChanged);
                     }
                 },
                 failure -> Log.e("Tutorial", "Query Failed", failure)
@@ -185,7 +185,7 @@ public class TodoItemAdapter extends ItemAdapter<Todo> implements Serializable {
                         appendList(completedItems);
                     }
                     if (cont instanceof Activity) {
-                        ((Activity)cont).runOnUiThread(this::notifyDataSetChanged);
+                        ((Activity) cont).runOnUiThread(this::notifyDataSetChanged);
                     }
                 },
                 failure -> Log.e("Tutorial", "Query Failed", failure)

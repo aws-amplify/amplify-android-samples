@@ -67,7 +67,7 @@ public abstract class ItemAdapter<T extends Model> extends RecyclerView.Adapter<
                         Log.i("Tutorial", "Item loaded: " + item.getId());
                     }
                     if (cont instanceof Activity) {
-                        ((Activity)cont).runOnUiThread(this::notifyDataSetChanged);
+                        ((Activity) cont).runOnUiThread(this::notifyDataSetChanged);
                     }
                 },
                 failure -> Log.e("Tutorial", "Query Failed", failure)
