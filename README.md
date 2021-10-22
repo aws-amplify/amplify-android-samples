@@ -62,7 +62,7 @@ Provide the responses shown after each of the following prompts.
 ```
 This will configure the Amplify API category to provision a GraphQL service with CRUD operations to persist data locally and automatically synchronize local data to the cloud with Amplify DataStore. 
 
-The GraphQL schema is defined as following: 
+The GraphQL schema is defined as follows: 
 
 ```
 enum Priority {
@@ -81,7 +81,7 @@ type Todo @model @auth(rules: [{allow: public}]) {
 
 4. Generate model files
    
-   From your project directory, run `amplify codegen models`. This will generate model files from the GraphQL schema. You'll find the generated files under `amplify-android-samples/getting-started/todo/java/app/src/main/java/com/amplifyframework/datastore/generated/model/` directory.
+   From your project directory, run `amplify codegen models`. This will generate model files from the GraphQL schema. You'll find the generated files under `amplify-android-samples/getting-started/todo/java/app/src/main/java/com/amplifyframework/datastore/generated/model/`(if you are using Java version) or `amplify-android-samples/getting-started/todo/kotlin/app/src/main/java/com/amplifyframework/datastore/generated/model/`(if you are using Kotlin version) directory.
    
 5. Once finished, run `amplify push` to publish your changes. Provide the responses shown after each of the following prompts.
 ```
