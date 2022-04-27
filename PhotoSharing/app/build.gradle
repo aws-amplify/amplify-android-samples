@@ -43,10 +43,7 @@ android {
 kotlin.sourceSets.all {
     languageSettings.optIn("kotlin.RequiresOptIn")
 }
-configurations {
-    all*.exclude group: 'xpp3', module: 'xpp3'
-    all*.exclude group: 'xmlpull', module: 'xmlpull'
-}
+
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
