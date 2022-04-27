@@ -18,7 +18,7 @@ git clone git@github.com:aws-amplify/amplify-android-samples.git
 ```
 - Change directory to PhotoSharing Android Project:
 ```bash
-cd amplify-android-samples/PhotoSharing/Android
+cd amplify-android-samples/PhotoSharing
 ```
 - Import the sample app as a project in Android Studio. (Be sure to `import` instead of `open`)
 
