@@ -59,7 +59,7 @@ dependencies {
 
     // Amplify dependency
     def amplify_version = "1.36.0-dev-preview.0"
-    def amplify_kotlin_version = "0.16.2"
+    def amplify_kotlin_version = "0.20.0-dev-preview.0"
     implementation "com.amplifyframework:core:$amplify_version"
     implementation "com.amplifyframework:aws-api:$amplify_version"
     implementation "com.amplifyframework:aws-api-appsync:$amplify_version"
