@@ -1,0 +1,34 @@
+<!--
+   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+   SPDX-License-Identifier: MIT-0
+-->
+<resources>
+    <string name="app_name">photosharing</string>
+    <string name="sign_in_text">Sign In</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="sign_out_text">Sign Out</string>
+    <string name="photo_sharing_text">Photo Sharing Sample</string>
+    <string name="welcome_message">You are now signed in as</string>
+    <string name="amplify_text">Amplify</string>
+    <string name="example_post_body">Example post body</string>
+    <string name="example_username">username</string>
+    <string name="example_post_time">2021–01–01</string>
+    <string name="post_text">Posts</string>
+    <string name="action_create_post">Create a post</string>
+    <string name="share_text">Share</string>
+    <string name="save_text">Save</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="post_body_hint">Write a caption…</string>
+    <string name="select_from_photo_library">Select a photo from gallery</string>
+    <string name="camera_text">Take a photo with camera</string>
+    <string name="no_more_posts">No More Posts</string>
+    <string name="load_posts">Load More Posts</string>
+    <string name="delete_text">Delete</string>
+    <string name="username_text">Username</string>
+    <string name="password_text">Password</string>
+    <string name="email_text">Email</string>
+    <string name="confirmation_code">Confirmation Code</string>
+    <string name="sign_up_with_a_new_account">Sign up with a new account</string>
+    <string name="send_code_text">Send</string>
+    <string name="confirm_sign_up">Confirm Sign Up</string>
+</resources>

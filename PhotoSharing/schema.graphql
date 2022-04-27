@@ -1,0 +1,15 @@
+type Post @model @auth(rules: [{allow: private}, {allow: owner}]) {
+  id: ID!
+  userId: ID!
+  postBody: String!
+  pictureKey: String!
+  createdAt: AWSDateTime!
+  postedBy: User! @belongsTo(fields: ["userId"])
+}
+
+type User @model @auth(rules: [{allow: private}, {allow: owner}]) {
+  id: ID!
+  username: String!
+  profilePic: String!
+  posts: [Post] @hasMany(fields: ["id"])
+}
