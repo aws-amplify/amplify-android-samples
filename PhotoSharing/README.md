@@ -128,12 +128,12 @@ Upon completion, `amplifyconfiguration.json` should be updated to reference thes
 
 ### Provision AWS backend resources using Amplify Admin UI
 
-1. Open Admin UI
+1. Open Amplify Studio
 
 - Sign in to the AWS Management Console and open AWS Amplify. Choose **Create app backend**.
 - Enter a name for your app (i.e. PhotoSharing), and choose **Confirm deployment**. This deploys a default **staging** backend environment.
 - On the application information page, choose the **Backend environments** tab.
-- Choose **Open Admin UI**. This automatically logs you in to the Admin UI.
+- Choose **Launch Studio**. This automatically logs you in to the Admin UI.
 
 If you already have an existing backend environment, you can enable the Admin UI from the console.
 
